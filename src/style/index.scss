@@ -1,0 +1,171 @@
+@import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600&display=swap');
+
+$containerColor: white;
+$elementsColor: #364153;
+
+* {
+  padding: 0;
+  margin: 0;
+  box-sizing: border-box;
+  font-family: 'JetBrains Mono', monospace;
+}
+
+.container {
+  width: 100%;
+  background-color: $containerColor;
+  height: 100vh;
+  box-sizing: border-box;
+  display: flex;
+
+  button {
+    cursor: pointer;
+  }
+
+  .layout {
+    .sider {
+      padding: 6px 0 0 0;
+      border-radius: 10px;
+    }
+  }
+
+  .content {
+    width: 100%;
+    overflow-y: auto;
+    padding: 12px;
+    background-color: #F0F3F9;
+
+    .product {
+      h3 {
+        color: white;
+      }
+    }
+    .body {
+      margin: 15px 0 0 0;
+
+      .enabled,
+      .disabled {
+        border: 0;
+        padding: 13px 20px;
+        border-radius: 26px;
+      }
+
+      .enabled {
+        background-color: #E6F6F5;
+        color: #03A89E;
+      }
+
+      .disabled {
+        background-color: #fee4f0;
+        color: #FF69B4;
+      }
+    }
+
+    .header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+
+      h3 {
+        color: black;
+      }
+
+      .search {
+
+        color: black;
+
+        input,
+        .ant-input-group-addon>button {
+          color: black;
+
+          &:focus,
+          &:active {
+            box-shadow: 0;
+          }
+
+          &::placeholder {
+            opacity: 0.5;
+          }
+        }
+      }
+
+      .btn {
+        padding: 0 10px;
+        background: #3A36DB;
+        border: 0;
+        color: white;
+      }
+    }
+
+    .dashboard {
+      display: flex;
+      flex-direction: column;
+
+      .cards {
+        width: 100%;
+        justify-content: space-between;
+        display: flex;
+        margin-top: 15px;
+
+        .card {
+          background-color: white;
+          border-radius: 10px;
+          display: flex;
+          align-items: center;
+          padding: 28px 30px;
+          gap: 20px;
+
+          div {
+            display: flex;
+            flex-direction: column;
+
+            p {
+              font-size: 15px;
+            }
+          }
+        }
+      }
+
+      .charts {
+        display: flex;
+        margin-top: 20px;
+        width: 100%;
+        align-items: center;
+
+        gap: 25px;
+
+        .area {
+          width: 65%;
+          height: 200px;
+          background-color: white;
+          border-radius: 6px;
+          padding: 10px 0 0 10px;
+        }
+
+        .pie {
+          width: 35%;
+          height: 200px;
+        }
+
+      }
+
+      .tables {
+        display: flex;
+        gap: 15px;
+        margin-top: 15px;
+
+        .first {
+          background-color: white;
+          padding: 10px;
+        }
+      }
+    }
+
+  }
+}
+
+.circle {
+  border-radius: 50%;
+  padding: 30px 33px;
+  outline: none;
+  border: 1px solid gray;
+}
