@@ -1,6 +1,6 @@
-import { useEffect, useState, useRef } from "react";
+import { useEffect, useState } from "react";
 import { Form, Button, Input, InputNumber, Drawer } from "antd";
-import { LeftOutlined, CameraFilled, DownloadOutlined } from "@ant-design/icons";
+import { LeftOutlined, CameraFilled, DownloadOutlined, LoadingOutlined } from "@ant-design/icons";
 import { useDispatch, useSelector } from "react-redux";
 import { postProduct, remakeProduct } from "../../store/action";
 import { updateState } from "../../store/reducer";
@@ -8,9 +8,10 @@ import axios from "axios";
 
 export default function AddProductModal({ newStatus }) {
   const dispatch = useDispatch();
-  const { isProductOpen, oneProduct , loadings: {saveBtnLoading} } = useSelector(state => state.app);
+  const { isProductOpen, oneProduct, loadings } = useSelector(state => state.app);
   const [image, setImage] = useState(null);
   const [useForm] = Form.useForm();
+  console.log(loadings);
 
   useEffect(() => {
     if (newStatus) {
@@ -39,7 +40,7 @@ export default function AddProductModal({ newStatus }) {
       promotion: value.promotion,
       stock: value.stock,
       image
-    };
+    };  
     if (oneProduct?.id) {
       dispatch(remakeProduct({ ...newValue, id: oneProduct.id, status: oneProduct.status }));
     }
@@ -49,6 +50,11 @@ export default function AddProductModal({ newStatus }) {
   }
 
   function postImg(e) {
+    dispatch(updateState({
+      loadings: {
+        uploadImageLoading: true
+      }
+    }));
     let formData = new FormData()
     formData.append('image', e.target.files[0])
     axios({
@@ -60,23 +66,29 @@ export default function AddProductModal({ newStatus }) {
         "ngrok-skip-browser-warning": true,
       }
     }).then(res => setImage(res.data.url))
-      .catch(err => console.log(err));
+      .catch(err => console.log(err))
+      .finally(dispatch(updateState({
+        loadings: {
+          uploadImageLoading: false
+        } 
+      })));
   }
-
-
 
   return (
     <>
       <Button className="btn" onClick={toggleOpen}>+ Add New</Button>
       <Drawer
+        forceRender
         footer={
-          <Button onClick={() => useForm.submit()} loading={saveBtnLoading} type="primary"> <DownloadOutlined /> Save Product </Button>
+          <Button onClick={() => useForm.submit()} loading={loadings.saveBtnLoading} type="primary"> <DownloadOutlined /> Save Product </Button>
         }
         style={{ textAlign: "center", alignItems: "center" }} closeIcon={<LeftOutlined />} title="Add a New Product" onClose={toggleOpen} open={isProductOpen}
       >
         <input id="input" type="file" onChange={postImg} style={{ display: "none" }} />
         <label htmlFor="input">
-            <CameraFilled className="circle" style={{ fontSize: 18 }} />
+          {
+            loadings.uploadImageLoading ? <LoadingOutlined /> : <CameraFilled className="circle" style={{ fontSize: 18 }} />
+          }
         </label>
         {image && <img src={image} alt="error" width={100} />}
         <Form form={useForm} layout="vertical" onFinish={onFinish} name="form">

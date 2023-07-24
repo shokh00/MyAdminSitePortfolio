@@ -7,13 +7,17 @@ export const getProduct = () => {
       dispatch(updateState({ products: response.data }))
     })
       .catch(err => console.log(err))
-      .finally(() => dispatch(updateState({ loadings: { tableLoading: false } })))
+      .finally(() => dispatch(updateState({
+        loadings: {
+          tableLoading: false
+        }
+      })))
   }
 };
 
 export const postProduct = data => {
   return dispatch => {
-    dispatch(updateState({ loadings: {saveBtnLoading: true }}))
+    dispatch(updateState({ loadings: { saveBtnLoading: true } }))
     call.post('/product', data).then(() => {
       dispatch(getProduct());
       dispatch(updateState({ isProductOpen: false }))
@@ -46,5 +50,35 @@ export const SwitchStatus = (item) => {
     call.put(`/product/status/${item.id}`, { status: !item.status }).then(res => {
       dispatch(getProduct());
     })
+  }
+}
+
+//!! Setting request
+
+export const getStore = () => {
+  return dispatch => {
+    call.get("/store")
+      .then(res => {
+        const data = delete res.data.logo;
+        dispatch(updateState({ settings: res.data }));
+      });
+  }
+};
+
+export const editNewCurrency = (defaultSettings, currency) => {
+  return dispatch => {
+    call.put(`/store/${defaultSettings.id}`, {
+      ...defaultSettings,
+      currency
+    }).then(() => dispatch(getStore()))
+  }
+}
+
+export const editNewAddress = (defaultSettings, address) => {
+  return dispatch => {
+    call.put(`/store/${defaultSettings.id}`, {
+      ...defaultSettings,
+      address
+    }).then(() => dispatch(getStore()))
   }
 }

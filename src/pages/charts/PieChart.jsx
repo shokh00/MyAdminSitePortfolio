@@ -42,6 +42,7 @@ const DemoPie = () => {
             offset: '-50%',
             style: {
                 textAlign: 'center',
+                
             },
             autoRotate: false,
             content: '{value}',
@@ -49,7 +50,7 @@ const DemoPie = () => {
         statistic: {
             title: {
                 offsetY: -4,
-                customHtml: (container, view, datum) => {
+                customHtml: (container) => {
                     const { width, height } = container.getBoundingClientRect();
                     const d = Math.sqrt(Math.pow(width / 2, 2) + Math.pow(height / 2, 2));
                 },
@@ -77,7 +78,7 @@ const DemoPie = () => {
 
     return (
         <div className="pie">
-            <Pie {...config} />
+            <Pie {...config} style={{height: "190px"}} />
         </div>
     );
 };

@@ -74,8 +74,8 @@ export default function Products() {
       key: "",
       width: 200,
       render: item => <button className={item.status == true ? "enabled" : "disabled"} >
-          {item.status == true ? "Enabled" : "Disabled"}
-        </button>
+        {item.status == true ? "Enabled" : "Disabled"}
+      </button>
     },
     {
       title: "Settings",

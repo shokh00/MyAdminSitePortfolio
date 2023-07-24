@@ -6,14 +6,15 @@ const slice = createSlice({
         products: [],
         isProductOpen: false,
         oneProduct: {},
+        settings: {},
         loadings: {
             tableLoading: true,
             saveBtnLoading: false,
+            uploadImageLoading: false
         }
     },
     reducers: {
         updateState: (state, action) => ({ ...state, ...action.payload }),
-        switchStatus: (state, action) => ({ ...state, ...state.products.status, status: !state.products.status })
     }
 });
 
