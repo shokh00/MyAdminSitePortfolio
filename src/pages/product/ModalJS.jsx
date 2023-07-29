@@ -40,7 +40,7 @@ export default function AddProductModal({ newStatus }) {
       promotion: value.promotion,
       stock: value.stock,
       image
-    };  
+    };
     if (oneProduct?.id) {
       dispatch(remakeProduct({ ...newValue, id: oneProduct.id, status: oneProduct.status }));
     }
@@ -50,11 +50,6 @@ export default function AddProductModal({ newStatus }) {
   }
 
   function postImg(e) {
-    dispatch(updateState({
-      loadings: {
-        uploadImageLoading: true
-      }
-    }));
     let formData = new FormData()
     formData.append('image', e.target.files[0])
     axios({
@@ -67,12 +62,9 @@ export default function AddProductModal({ newStatus }) {
       }
     }).then(res => setImage(res.data.url))
       .catch(err => console.log(err))
-      .finally(dispatch(updateState({
-        loadings: {
-          uploadImageLoading: false
-        } 
-      })));
   }
+
+  console.log(image);
 
   return (
     <>
@@ -86,9 +78,7 @@ export default function AddProductModal({ newStatus }) {
       >
         <input id="input" type="file" onChange={postImg} style={{ display: "none" }} />
         <label htmlFor="input">
-          {
-            loadings.uploadImageLoading ? <LoadingOutlined /> : <CameraFilled className="circle" style={{ fontSize: 18 }} />
-          }
+          <CameraFilled className="circle" style={{ fontSize: 18 }} />
         </label>
         {image && <img src={image} alt="error" width={100} />}
         <Form form={useForm} layout="vertical" onFinish={onFinish} name="form">

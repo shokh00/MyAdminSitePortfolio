@@ -6,12 +6,12 @@ const slice = createSlice({
         products: [],
         isProductOpen: false,
         oneProduct: {},
-        settings: {},
+        UserSetting: [],
+        StoreSetting: [],
         loadings: {
             tableLoading: true,
             saveBtnLoading: false,
-            uploadImageLoading: false
-        }
+        },
     },
     reducers: {
         updateState: (state, action) => ({ ...state, ...action.payload }),

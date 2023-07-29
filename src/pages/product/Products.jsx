@@ -1,4 +1,4 @@
-import { Input, Space, Table, Button, Dropdown } from "antd";
+  import { Input, Space, Table, Button, Dropdown } from "antd";
 import { deleteProduct, SwitchStatus } from "../../store/action";
 import { useDispatch, useSelector } from "react-redux";
 import { EllipsisOutlined, EditOutlined, DeleteOutlined } from "@ant-design/icons";
@@ -35,7 +35,7 @@ export default function Products() {
   const columns = [
     {
       title: "Image", dataIndex: "image", key: "image",
-      render: (item) => <img width={100} height={100} src={item} alt="error" />
+      render: (item) => <img width={100} height={100} src={item} alt="noImage" />
     },
     {
       title: "Product name",
@@ -133,9 +133,11 @@ export default function Products() {
       <div className="body">
         <Table
           rowKey={"id"}
+          className="table"
           columns={columns} pagination={true}
           dataSource={products}
           loading={tableLoading}
+          style={{width: "100vw"}}
         />
       </div>
     </div>

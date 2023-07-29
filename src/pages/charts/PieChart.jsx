@@ -1,3 +1,4 @@
+import { EllipsisOutlined } from '@ant-design/icons';
 import { Pie, measureTextWidth } from '@ant-design/plots';
 
 const DemoPie = () => {
@@ -42,7 +43,7 @@ const DemoPie = () => {
             offset: '-50%',
             style: {
                 textAlign: 'center',
-                
+
             },
             autoRotate: false,
             content: '{value}',
@@ -78,7 +79,11 @@ const DemoPie = () => {
 
     return (
         <div className="pie">
-            <Pie {...config} style={{height: "190px"}} />
+            <div className='head'>
+                <h3>Buyurtmalar holati</h3>
+                <EllipsisOutlined />
+            </div>
+            <Pie {...config} style={{ height: "150px" }} />
         </div>
     );
 };

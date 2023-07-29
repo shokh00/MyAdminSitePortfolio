@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,700&family=JetBrains+Mono:wght@500&display=swap');
 
 $containerColor: white;
 $elementsColor: #364153;
@@ -8,6 +8,7 @@ $fullW: 100%;
   padding: 0;
   margin: 0;
   box-sizing: border-box;
+  font-family: 'DM Sans', sans-serif;
   font-family: 'JetBrains Mono', monospace;
 }
 
@@ -16,7 +17,6 @@ $fullW: 100%;
   background-color: $containerColor;
   box-sizing: border-box;
   display: flex;
-  height: 100vh;
 
   button {
     cursor: pointer;
@@ -24,8 +24,9 @@ $fullW: 100%;
 
   .layout {
     height: 100%;
+
     .sider {
-      padding: 6px 0 0 0; 
+      padding: 6px 0 0 0;
       border-radius: 10px;
     }
 
@@ -45,34 +46,46 @@ $fullW: 100%;
     width: $fullW;
     padding: 12px;
     background-color: #F0F3F9;
+    overflow-x: hidden;
+    height: 100vh;
 
     .settings {
       width: 100%;
-      height: 100vh;
       display: flex;
-      justify-content: space-between;
-      flex-wrap: wrap;
-      border: 1px solid red;
 
       .card {
-        width: 30%;
-        height: 125px;
+        width: 80%;
+        height: 100%;
+        background-color: white;
         display: flex;
-        flex-direction: column;
-        justify-content: center;
+        padding: 0 15px 0 0;
 
-        .body {
+        .sider {
+          width: 175px;
+          height: 100%;
+          padding: 20px 20px 0 20px;
+          align-items: center;
           display: flex;
-          gap: 15px;
+          flex-direction: column;
+          border-right: 1px solid lightgray;
 
-          input {
-            width: 70%;
+          img {
+            width: 60px;
+            height: 60px;
+            object-fit: contain;
           }
 
-          button {
-            width: 20%;
-            padding: 0;
+          h4 {
+            overflow: hidden;
+            white-space: nowrap;
+            text-overflow: ellipsis;
           }
+        }
+
+        .mainBody {
+          display: flex;
+          padding: 20px 0 0 30px;
+          flex-direction: column;
         }
       }
     }
@@ -81,27 +94,28 @@ $fullW: 100%;
       h3 {
         color: white;
       }
-    }
 
-    .body {
-      margin: 15px 0 0 0;
+      .body {
+        margin: 15px 0 0 0;
 
-      .enabled,
-      .disabled {
-        border: 0;
-        padding: 13px 20px;
-        border-radius: 26px;
+        .enabled,
+        .disabled {
+          border: 0;
+          padding: 13px 20px;
+          border-radius: 26px;
+        }
+
+        .enabled {
+          background-color: #E6F6F5;
+          color: #03A89E;
+        }
+
+        .disabled {
+          background-color: #fee4f0;
+          color: #FF69B4;
+        }
       }
 
-      .enabled {
-        background-color: #E6F6F5;
-        color: #03A89E;
-      }
-
-      .disabled {
-        background-color: #fee4f0;
-        color: #FF69B4;
-      }
     }
 
     .header {
@@ -144,130 +158,163 @@ $fullW: 100%;
       display: flex;
       flex-direction: column;
 
-      .cards {
-        width: $fullW;
-        justify-content: space-between;
+      .charts {
+        width: 100%;
+
+        .area {
+          height: 100%;
+        }
+      }
+
+      .head {
         display: flex;
+        padding: 10px 0;
+        justify-content: space-between;
+        align-items: center;
+
+        h3 {
+          font-size: 13px;
+          color: #06152B;
+        }
+      }
+
+      .cards {
         margin-top: 15px;
-        flex-wrap: wrap;
+        margin-right: -10px !important;
 
         .card {
           background-color: white;
           border-radius: 10px;
           display: flex;
           align-items: center;
-          padding: 28px 45px;
+          padding: 25px 25px;
           gap: 20px;
 
           div {
             display: flex;
             flex-direction: column;
+            overflow: hidden;
 
             p {
+              width: 100%;
+              text-overflow: ellipsis;
+              white-space: nowrap;
               font-size: 15px;
             }
           }
         }
       }
 
-      .charts {
-        display: flex;
-        margin-top: 20px;
-        width: $fullW;
-        align-items: center;
-        flex-wrap: wrap;
-
-        gap: 25px;
+      .chart {
+        height: 100%;
+        background-color: white;
+        border-radius: 12px;
 
         .area {
-          width: 63%;
-          padding: 50px 0 0 0;
-          background-color: white;
-          border-radius: 6px;
-          padding: 10px 5px;
+          height: 100%;
+          padding: 6px 10px;
+
+          .head {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 10px 0;
+          }
         }
 
         .pie {
-          width: 35%;
-          padding: 30px 0 0 0;
-          background-color: white;
-          display: flex;
-          justify-content: center;
-          align-items: center;
+          padding: 6px 10px;
+
         }
 
-      }
-
-      .tables {
-        display: flex;
-        gap: 15px;
-        margin-top: 15px;
-
-        .first {
-          width: 63.5%;
-          background-color: white;
-          padding: 10px;
-
-          .top {
-            display: flex;
-            justify-content: space-between;
-          }
-
-          .body-part {
-            width: $fullW;
-          }
-        }
       }
     }
 
+    .tables {
+      display: flex;
+      margin-top: 15px;
+      overflow-y: visible;
+
+      .latestOrderedProducts,
+      .theBestsellerProducts {
+        background-color: white;
+        padding: 10px 12px;
+        border-radius: 12px;
+
+        .table {
+          // height: 80%;
+          overflow: auto;
+
+          h3 {
+            border: 1px solid red;
+          }
+        }
+      }
+
+      .theBestsellerProducts {
+        overflow: auto;
+
+        .onlyTwo {
+          display: flex;
+          flex-direction: column;
+          gap: 20px;
+        }
+
+        .aProduct {
+          display: flex;
+          gap: 10px;
+
+          img {
+            border-radius: 16px;
+            width: 85px;
+            height: 85px;
+            object-fit: cover;
+            padding: 3px;
+          }
+
+          .about {
+            width: 100%;
+            flex-direction: column;
+            justify-content: center;
+            display: flex;
+
+            h3 {
+              margin: 0;
+            }
+          }
+        }
+      }
+
+      h3 {
+        margin: 0 0 10px 0;
+      }
+    }
   }
 }
+
 
 //!! Often Usable !!\\
 
 .circle {
   border-radius: 50%;
-  padding: 30px 33px;
   outline: none;
   border: 1px solid gray;
+  width: 100px;
+  height: 100px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
 //~~ Media ~~\\
 
 @media screen and (max-width: 480px) {}
 
-@media (min-width: 480px) and (max-width: 768px) {
-  .dashboard {
+.ant-spin-container {
+  width: 100% !important;
+  overflow-x: auto;
+}
 
-    .cards {
-      gap: 20px;
-
-      .card {
-        padding: 10px 5px !important;
-        width: 45%;
-        justify-content: center;
-        gap: 0 !important;
-        line-height: 30px;
-        flex-direction: column;
-        text-align: center;
-      }
-    }
-
-    .charts {
-      flex-direction: column;
-
-      .pie,
-      .area {
-        width: $fullW !important;
-      }
-    }
-
-    .tables {
-      flex-direction: column;
-
-      .first {
-        width: $fullW !important;
-      }
-    }
-  }
+.ant-card .ant-card-body {
+  padding: 10px 24px;
 }

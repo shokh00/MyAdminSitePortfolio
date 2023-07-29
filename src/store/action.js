@@ -55,30 +55,41 @@ export const SwitchStatus = (item) => {
 
 //!! Setting request
 
-export const getStore = () => {
+export const getUserInfo = () => {
   return dispatch => {
-    call.get("/store")
-      .then(res => {
-        const data = delete res.data.logo;
-        dispatch(updateState({ settings: res.data }));
-      });
+    call.get("/auth")
+      .then(res => dispatch(updateState({
+        UserSetting: res.data
+      })))
   }
 };
 
-export const editNewCurrency = (defaultSettings, currency) => {
+export const putUserInfo = data => {
   return dispatch => {
-    call.put(`/store/${defaultSettings.id}`, {
-      ...defaultSettings,
-      currency
-    }).then(() => dispatch(getStore()))
-  }
-}
+    call.put("/auth", data)
+      .then(() => {
+        dispatch(getUserInfo())
+      });
+  };
+};
 
-export const editNewAddress = (defaultSettings, address) => {
+
+export const getStoreInfo = () => {
   return dispatch => {
-    call.put(`/store/${defaultSettings.id}`, {
-      ...defaultSettings,
-      address
-    }).then(() => dispatch(getStore()))
+    call.get("/store")
+      .then(res => {
+        dispatch(updateState({
+          StoreSetting: res.data
+        }))
+      })
   }
-}
+};
+
+export const putStoreInfo = data => {
+  return dispatch => {
+    call.put(`/store/${data.id}`, data)
+      .then(() => {
+        dispatch(getStoreInfo())
+      });
+  };
+};

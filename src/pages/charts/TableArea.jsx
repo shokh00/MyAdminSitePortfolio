@@ -1,6 +1,6 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { Area } from '@ant-design/plots';
-
+import { EllipsisOutlined } from '@ant-design/icons';
 
 const DemoArea = () => {
     const [data, setData] = useState([
@@ -29,12 +29,15 @@ const DemoArea = () => {
         xAxis: {
             range: [0, 1],
         },
-        height: 200
     };
 
     return (
         <div className='area'>
-            <Area {...config} />
+            <div className='head'>
+                <h3>Haftalik hisobotlar</h3>
+                <EllipsisOutlined style={{padding: "0 4% 0 0"}} />    
+            </div>
+            <Area {...config} style={{height: "150px"  }} />
         </div>
     );
 };
