@@ -37,7 +37,7 @@ const DemoArea = () => {
                 <h3>Haftalik hisobotlar</h3>
                 <EllipsisOutlined style={{padding: "0 4% 0 0"}} />    
             </div>
-            <Area {...config} style={{height: "150px"  }} />
+            <Area {...config} style={{height: "250px"  }} />
         </div>
     );
 };

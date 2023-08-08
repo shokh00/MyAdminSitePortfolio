@@ -11,11 +11,8 @@ export default function Products() {
   const { products, oneProduct, loadings: { tableLoading } } = useSelector(state => state.app);
   const onSearch = (value) => console.log(value);
 
-  // moment(products[0].date).format("L");
-  console.log();
 
   const fall = (item, e) => {
-    console.log(item);
     if (e.key == "1") {
       dispatch(updateState({ isProductOpen: true }));
       dispatch(updateState({ oneProduct: item }));
@@ -63,7 +60,7 @@ export default function Products() {
           <tbody>
             {
               products.map(item => (
-                <tr>
+                <tr key={item.id} className="asdsad">
                   <td className="col col-1">
                     <img src={item.image} style={item.image ? { width: "150px" } : { width: "50%" }} alt="" />
                   </td>
@@ -125,9 +122,6 @@ export default function Products() {
           </tbody>
         </table>
       </div>
-      <button onClick={() => dispatch(getOrderHistory())}>
-        Get
-      </button>
     </div >
   )
 }

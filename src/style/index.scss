@@ -101,7 +101,7 @@ $fullW: 100%;
       overflow: auto;
 
       .table {
-        border-collapse: separate;
+        border-collapse: separate !important;
         border-spacing: 0 15px;
 
         thead {
@@ -115,11 +115,13 @@ $fullW: 100%;
 
         tbody {
           tr {
+            overflow: hidden;
             background-color: white;
-            border-radius: 16px !important;
           }
 
           .col-1 {
+            border-top-left-radius: 10px !important;
+
             img {
               object-fit: contain;
               padding: 15px;
@@ -271,7 +273,6 @@ $fullW: 100%;
 
         .pie {
           padding: 6px 10px;
-
         }
 
       }
@@ -285,17 +286,22 @@ $fullW: 100%;
       .latestOrderedProducts,
       .theBestsellerProducts {
         background-color: white;
-        padding: 10px 12px;
+        padding: 20px 12px 40px 12px;
         border-radius: 12px;
-        height: 100%;
 
         .table {
           overflow: auto;
         }
       }
 
+      .latestOrderedProducts {
+        height: 100%;
+      }
+
       .theBestsellerProducts {
+        padding: 10px 12px 25px 12px;
         overflow: auto;
+        height: fit-content;
 
         .onlyTwo {
           display: flex;
@@ -310,7 +316,7 @@ $fullW: 100%;
           img {
             border-radius: 16px;
             width: 85px;
-            height: 85px;
+            height: 95px;
             object-fit: cover;
             padding: 3px;
           }
@@ -335,21 +341,23 @@ $fullW: 100%;
 
     .orders {
       height: 100%;
-      
+
       .order-body {
         overflow: auto;
+
         table {
           width: 100%;
           border-spacing: 10px;
           border-collapse: separate;
-          
+
           .order-table-tr {
             box-shadow: rgba(0, 0, 0, 0.09) 0px 3px 12px;
             border-radius: 12px;
-            
+
             .order-table-td {
               padding: 25px 0;
               text-align: center;
+
               &:nth-child(1) {
                 padding: 0 0 0 5px;
               }
@@ -383,15 +391,7 @@ $fullW: 100%;
   margin: 10px 0 0 0;
 }
 
-//~~ Media ~~\\
-
-@media screen and (max-width: 480px) {}
-
 .ant-spin-container {
   width: 100% !important;
   overflow-x: auto;
-}
-
-.ant-card .ant-card-body {
-  padding: 10px 24px;
 }

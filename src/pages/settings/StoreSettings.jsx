@@ -20,10 +20,7 @@ export default function UserSettings() {
         });
     }, [StoreSetting]);
 
-    console.log(StoreSetting);
-
     function postImg(e) {
-        console.log("123");
         let formData = new FormData()
         formData.append('image', e.target.files[0])
         axios({
@@ -34,23 +31,28 @@ export default function UserSettings() {
                 apiKey: "2ap7JQwe9l58hUtfGsHT",
                 "ngrok-skip-browser-warning": true,
             }
-        }).then(res => {
-            console.log(res);
-            setImage(res.data.url);
-        })
-            .catch(err => console.log(err))
+        }).then(res => setImage(res.data.url))
+            .catch(err => console.log(err));
     }
 
-    console.log(image);
-
     const onFinish = value => {
-        const newValue = {
-
+        let newValue;
+        if (image == null) {
+            newValue = {
+                ...value,
+                image: StoreSetting.image,
+                id: StoreSetting.id
+            }
         }
-        // dispatch(putStoreInfo(newValue));
+        else {
+            newValue = {
+                ...value,
+                image,
+                id: StoreSetting.id
+            }
+        }
 
-        // let newValue;
-
+        dispatch(putStoreInfo(newValue));
     }
 
     return (
@@ -95,7 +97,7 @@ export default function UserSettings() {
                                     </Col>
                                     <Col xs={24} sm={12} md={12} lg={12} xl={8}>
                                         <Form.Item rules={[{ min: 7 }]} name="supportPhone" label="Support Phone" >
-                                            <Input type='number' className='input' />
+                                            <Input addonBefore="+998" type='number' />
                                         </Form.Item>
                                     </Col>
                                     <Col xs={24} sm={12} md={12} lg={12} xl={8}>
@@ -103,7 +105,7 @@ export default function UserSettings() {
                                             <Input className='input' />
                                         </Form.Item>
                                     </Col>
-                                    <Col xs={24} sm={12} md={12} lg={12} xl={8} style={{ display: "flex" , alignItems: "end" }}>
+                                    <Col xs={24} sm={12} md={12} lg={12} xl={8} style={{ display: "flex", alignItems: "end" }}>
                                         <Form.Item>
                                             <Button style={{ alignItems: "center" }} htmlType='submit' block type='primary'> Update </Button>
                                         </Form.Item>

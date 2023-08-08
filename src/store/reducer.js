@@ -9,6 +9,7 @@ const slice = createSlice({
         UserSetting: [],
         StoreSetting: [],
         OrderHistory: [],
+        DashboardInfo: [],
         loadings: {
             tableLoading: true,
             saveBtnLoading: false,

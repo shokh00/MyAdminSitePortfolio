@@ -4,7 +4,7 @@ import * as Icon from "./icons/index";
 import Router from './router';
 import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { getProduct, getStoreInfo, getUserInfo } from './store/action';
+import { getDashboardInfo, getOrderHistory, getProduct, getStoreInfo, getUserInfo } from './store/action';
 const { Sider } = Layout;
 
 const App = () => {
@@ -12,13 +12,14 @@ const App = () => {
   const navigation = useNavigate();
   const dispatch = useDispatch();
   const [collapsed, setCollapsed] = useState(false);
-  const { UserSetting } = useSelector(selector => selector.app);
   const [width, setWidth] = useState(window.innerWidth);
 
   useEffect(() => {
     dispatch(getProduct());
     dispatch(getUserInfo());
     dispatch(getStoreInfo());
+    dispatch(getOrderHistory());
+    dispatch(getDashboardInfo());
   }, [Router]);
 
   const items = [

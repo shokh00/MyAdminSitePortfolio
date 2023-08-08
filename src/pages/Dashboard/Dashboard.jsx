@@ -6,8 +6,9 @@ import { useSelector } from "react-redux";
 import { Table, Row, Col, Rate } from "antd"
 
 export default function Dashboard() {
-  const { products } = useSelector(state => state.app);
+  const { DashboardInfo, StoreSetting } = useSelector(state => state.app);
   const windowsWidth = window.innerWidth;
+
   const columns = [
     {
       title: "Tracking no",
@@ -29,9 +30,14 @@ export default function Dashboard() {
     {
       title: "Count",
       key: "count",
-      dataIndex: "amount"
+      dataIndex: "quantity"
     },
-  ]
+    {
+      title: "Total Amount",
+      key: "totalAmount",
+      dataIndex: `price`
+    },
+  ];
 
   return (
     <div className="dashboard">
@@ -42,7 +48,9 @@ export default function Dashboard() {
             <div className="card">
               <Icons.heart color={"#3A36DB"} />
               <div>
-                <h3>178+</h3>
+                <h3>
+                  {DashboardInfo.topCards?.todaySalesPrice.toFixed(2)}{StoreSetting.currency}
+                </h3>
                 <p>Bugungi Savdo</p>
               </div>
             </div>
@@ -51,7 +59,7 @@ export default function Dashboard() {
             <div className="card">
               <Icons.game color={"#03A89E"} />
               <div>
-                <h3>{products.length}</h3>
+                <h3>{DashboardInfo.topCards?.todayOrders}</h3>
                 <p>Bugungi Buyurtmalar</p>
               </div>
             </div>
@@ -60,7 +68,7 @@ export default function Dashboard() {
             <div className="card">
               <Icons.bag color={"#FF69B4"} />
               <div>
-                <h3>190+</h3>
+                <h3>{DashboardInfo.topCards?.monthSalesPrice.toFixed(2)}{StoreSetting.currency}</h3>
                 <p>Haftalik Savdo</p>
               </div>
             </div>
@@ -69,7 +77,7 @@ export default function Dashboard() {
             <div className="card">
               <Icons.job color={"#3A36DB"} />
               <div>
-                <h3>12+</h3>
+                <h3>{DashboardInfo.topCards?.monthOrders}</h3>
                 <p>Haftalik Buyurtmalar</p>
               </div>
             </div>
@@ -77,8 +85,8 @@ export default function Dashboard() {
         </Row>
       </div>
       <div className="charts">
-        <Row gutter={windowsWidth < 768 ? [0, 20] : [30, 0]} style={{ marginTop: "15px"}}>
-          <Col xs={24} sm={24} md={12} lg={12} xl={16} style={{paddingRight: "0px" }}>
+        <Row gutter={windowsWidth < 768 ? [0, 20] : [30, 0]} style={{ marginTop: "15px" }}>
+          <Col xs={24} sm={24} md={12} lg={12} xl={16} style={{ paddingRight: "0px" }}>
             <div className="chart">
               <DemoArea />
             </div>
@@ -98,33 +106,31 @@ export default function Dashboard() {
                 <h3>Ohirgi buyurtmalar</h3>
                 <EllipsisOutlined />
               </div>
-              <Table className="table" columns={columns} dataSource={products} pagination={false} />
+              <Table className="table" rowKey={"id"} dataSource={DashboardInfo.lastOrder?.products} columns={columns} pagination={false} />
             </div>
           </Col>
-          <Col xs={24} sm={24} md={12} lg={12} xl={8} style={{height: "100%"}}>
-            <div className="theBestsellerProducts" style={{height: "100%"}}>
+          <Col xs={24} sm={24} md={12} lg={12} xl={8}>
+            <div className="theBestsellerProducts">
               <div className="head">
                 <h3 style={{ margin: '0' }}>Eng ko’p sotilgan mahsulotlar</h3>
                 <EllipsisOutlined />
               </div>
               <div className="onlyTwo">
-                <div className="aProduct" style={windowsWidth < 470 ? { flexDirection: "column", alignItems: "center", textAlign: "center" } : { display: "flex" }}>
-                  <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTZKXUwa-URi6ZdameEjdtFfqXuqiTcACmTrA&usqp=CAU" alt="Something went wrong" />
-                  <div className="about">
-                    <h3>Nature</h3>
-                    <Rate />
-                    <h3>87$</h3>
-                  </div>
-                </div>
-                <hr />
-                <div className="aProduct" style={windowsWidth < 470 ? { flexDirection: "column", alignItems: "center", textAlign: "center" } : { display: "flex" }}>
-                  <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTZKXUwa-URi6ZdameEjdtFfqXuqiTcACmTrA&usqp=CAU" alt="Something went wrong" />
-                  <div className="about">
-                    <h3>Nature</h3>
-                    <Rate />
-                    <h3>87$</h3>
-                  </div>
-                </div>
+                {
+                  DashboardInfo.topProducts?.map(item => {
+                    return <>
+                      <div className="aProduct" style={windowsWidth < 470 ? { flexDirection: "column", alignItems: "center", textAlign: "center" } : { display: "flex" }}>
+                        <img src={item.image} alt="Something went wrong" />
+                        <div className="about">
+                          <h3>{item.productName}</h3>
+                          <Rate />
+                          <h3>{item.price}{StoreSetting.currency}</h3>
+                        </div>
+                      </div>
+                      <hr />
+                    </>
+                  })
+                }
               </div>
             </div>
           </Col>

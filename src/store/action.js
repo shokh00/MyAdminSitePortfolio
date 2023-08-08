@@ -60,6 +60,13 @@ export const getOrderHistory = () => {
   }
 }
 
+export const getDashboardInfo = () => {
+  return dispatch => {
+    call.get("/dashboard")
+    .then(res => dispatch(updateState({DashboardInfo: res.data})));
+  }
+}
+
 //!! Setting request
 
 export const getUserInfo = () => {

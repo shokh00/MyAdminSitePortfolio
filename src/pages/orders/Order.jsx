@@ -4,10 +4,8 @@ const { Search } = Input;
 
 export default function Order() {
     const { OrderHistory , StoreSetting } = useSelector(state => state.app);
-    console.log(OrderHistory);
 
     const onSearch = value => console.log(value);
-    console.log(OrderHistory);
 
     return (
         <div className="orders">
