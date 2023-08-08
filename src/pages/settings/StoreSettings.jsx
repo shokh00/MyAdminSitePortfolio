@@ -1,8 +1,8 @@
-import { Card, Form, Input, Col, Button, Row, Tag } from 'antd';
+import { Form, Input, Col, Button, Row } from 'antd';
 import { useDispatch, useSelector } from 'react-redux';
 import axios from 'axios';
 import { useEffect, useState } from 'react';
-import { putStoreInfo, putUserInfo } from '../../store/action';
+import { putStoreInfo } from '../../store/action';
 
 export default function UserSettings() {
     const dispatch = useDispatch();

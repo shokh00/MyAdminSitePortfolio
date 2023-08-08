@@ -395,3 +395,17 @@ $fullW: 100%;
   width: 100% !important;
   overflow-x: auto;
 }
+
+// Media
+
+@media screen and (max-width: 710px) {
+  .settings {
+    .card {
+      flex-direction: column;
+      .sider {
+        width: 100% !important;
+        border-right: 0 !important;
+      }
+    }
+  }
+}

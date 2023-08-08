@@ -58,7 +58,7 @@ export default function UserSettings() {
     return (
         <Row gutter={[30, 30]}>
             <Col>
-                <div className='card' >
+                <div className='card'>
                     <div className="sider">
                         <Row style={{ textAlign: "center" }}>
                             <Col xs={24} sm={24} md={24} lg={24} xl={24}>
