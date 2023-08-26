@@ -1,16 +1,18 @@
-import { Card, Form, Input, Col, Button, Row, Tag } from 'antd';
+import { Form, Input, Col, Button, Row, Spin } from 'antd';
 import { useDispatch, useSelector } from 'react-redux';
 import axios from 'axios';
 import { useEffect, useState } from 'react';
-import { putStoreInfo, putUserInfo } from '../../store/action';
+import { getStoreInfo, putStoreInfo } from '../../config/action';
 
 export default function UserSettings() {
     const dispatch = useDispatch();
-    const { StoreSetting } = useSelector(selector => selector.app);
+    const { StoreSetting, loadings: { StoreSettingLoadign } } = useSelector(selector => selector.app);
     const [useForm] = Form.useForm();
     const [image, setImage] = useState(null);
+    const [loading, setLoading] = useState(false);
 
     useEffect(() => {
+        dispatch(getStoreInfo());
         useForm.setFieldsValue({
             name: StoreSetting.name,
             currency: StoreSetting.currency,
@@ -20,10 +22,9 @@ export default function UserSettings() {
         });
     }, [StoreSetting]);
 
-    console.log(StoreSetting);
-
     function postImg(e) {
-        console.log("123");
+        console.log("working");
+        setLoading(true);
         let formData = new FormData()
         formData.append('image', e.target.files[0])
         axios({
@@ -34,23 +35,29 @@ export default function UserSettings() {
                 apiKey: "2ap7JQwe9l58hUtfGsHT",
                 "ngrok-skip-browser-warning": true,
             }
-        }).then(res => {
-            console.log(res);
-            setImage(res.data.url);
-        })
+        }).then(res => setImage(res.data.url))
             .catch(err => console.log(err))
+            .finally(() => setLoading(false));
     }
 
-    console.log(image);
-
     const onFinish = value => {
-        const newValue = {
-
+        let newValue;
+        if (image == null) {
+            newValue = {
+                ...value,
+                image: StoreSetting.image,
+                id: StoreSetting.id
+            }
         }
-        // dispatch(putStoreInfo(newValue));
+        else {
+            newValue = {
+                ...value,
+                image,
+                id: StoreSetting.id
+            }
+        }
 
-        // let newValue;
-
+        dispatch(putStoreInfo(newValue));
     }
 
     return (
@@ -60,17 +67,18 @@ export default function UserSettings() {
                     <div className="sider">
                         <Row style={{ textAlign: "center" }}>
                             <Col xs={24} sm={24} md={24} lg={24} xl={24}>
-                                <input id="input" type="file" onChange={postImg} style={{ display: "none" }} />
-                                <label htmlFor="input">
-                                    <img src={image || StoreSetting.logo} alt="" />
+                                <label htmlFor="input1">
+                                    <img src={image || StoreSetting.image} height={100} width={150} alt="..." />
                                 </label>
                             </Col>
+                            <input id="input1" type="file" onChange={postImg} style={{ display: "none" }} />
                             <Col xs={24} sm={24} md={24} lg={24} xl={24}>
                                 <h4>{StoreSetting.name}</h4>
                             </Col>
                             <Col xs={24} sm={24} md={24} lg={24} xl={24}>
                                 <h6>{StoreSetting.id}</h6>
                             </Col>
+                            <Spin spinning={loading} />
                         </Row>
                     </div>
                     <div className="mainBody">
@@ -95,7 +103,7 @@ export default function UserSettings() {
                                     </Col>
                                     <Col xs={24} sm={12} md={12} lg={12} xl={8}>
                                         <Form.Item rules={[{ min: 7 }]} name="supportPhone" label="Support Phone" >
-                                            <Input type='number' className='input' />
+                                            <Input addonBefore="+998" type='number' />
                                         </Form.Item>
                                     </Col>
                                     <Col xs={24} sm={12} md={12} lg={12} xl={8}>
@@ -103,9 +111,9 @@ export default function UserSettings() {
                                             <Input className='input' />
                                         </Form.Item>
                                     </Col>
-                                    <Col xs={24} sm={12} md={12} lg={12} xl={8} style={{ display: "flex" , alignItems: "end" }}>
+                                    <Col xs={24} sm={12} md={12} lg={12} xl={8} style={{ display: "flex", alignItems: "end" }}>
                                         <Form.Item>
-                                            <Button style={{ alignItems: "center" }} htmlType='submit' block type='primary'> Update </Button>
+                                            <Button style={{ alignItems: "center" }} htmlType='submit' block type='primary' loading={StoreSettingLoadign}> Update </Button>
                                         </Form.Item>
                                     </Col>
                                 </Row>

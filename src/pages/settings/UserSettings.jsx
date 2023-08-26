@@ -1,16 +1,18 @@
-import { Card, Form, Input, Col, Button, Row, Tag } from 'antd';
+import { Form, Input, Col, Button, Row, Tag, Spin } from 'antd';
 import { useDispatch, useSelector } from 'react-redux';
 import axios from 'axios';
 import { useEffect, useState } from 'react';
-import { putUserInfo } from '../../store/action';
+import { getUserInfo, putUserInfo } from '../../config/action';
 
 export default function UserSettings() {
     const dispatch = useDispatch();
-    const { UserSetting } = useSelector(selector => selector.app);
+    const { UserSetting, loadings: { UserSettingLoadign } } = useSelector(selector => selector.app);
     const [useForm] = Form.useForm();
     const [image, setImage] = useState(null);
+    const [loading, setLoading] = useState(false);
 
     useEffect(() => {
+        dispatch(getUserInfo());
         useForm.setFieldsValue({
             fullName: UserSetting.fullName,
             email: UserSetting.email,
@@ -20,6 +22,7 @@ export default function UserSettings() {
     }, [UserSetting]);
 
     function postImg(e) {
+        setLoading(true);
         let formData = new FormData()
         formData.append('image', e.target.files[0])
         axios({
@@ -32,6 +35,7 @@ export default function UserSettings() {
             }
         }).then(res => setImage(res.data.url))
             .catch(err => console.log(err))
+            .finally(() => setLoading(false));
     }
 
     const onFinish = value => {
@@ -58,18 +62,19 @@ export default function UserSettings() {
     return (
         <Row gutter={[30, 30]}>
             <Col>
-                <div className='card' >
+                <div className='card'>
                     <div className="sider">
                         <Row style={{ textAlign: "center" }}>
                             <Col xs={24} sm={24} md={24} lg={24} xl={24}>
                                 <input id="input" type="file" onChange={postImg} style={{ display: "none" }} />
                                 <label htmlFor="input">
-                                    <img src={image || UserSetting.image} alt="" />
+                                    <img src={image || UserSetting.image} height={100} width={150} alt="..." />
                                 </label>
                             </Col>
                             <Col xs={24} sm={24} md={24} lg={24} xl={24}>
                                 <h4>{UserSetting.fullName}</h4>
                             </Col>
+                            <Spin spinning={loading} style={{ width: "100%", textAlign: "center", margin: "5px 0 0 0" }} />
                         </Row>
                     </div>
                     <div className="mainBody">
@@ -94,12 +99,12 @@ export default function UserSettings() {
                                     </Col>
                                     <Col xs={24} sm={12} md={12} lg={12} xl={12}>
                                         <Form.Item rules={[{ min: 7 }]} name="phone" label="Phone" >
-                                            <Input type='number' className='input' />
+                                            <Input addonBefore="+998" type='number' className='input' />
                                         </Form.Item>
                                     </Col>
                                     <Col xs={24} sm={12} md={12} lg={12} xl={12} style={{ display: "flex", alignItems: "end" }}>
                                         <Form.Item>
-                                            <Button style={{ alignItems: "center" }} htmlType='submit' block type='primary'> Update </Button>
+                                            <Button style={{ alignItems: "center" }} htmlType='submit' block type='primary' loading={UserSettingLoadign}> Update </Button>
                                         </Form.Item>
                                     </Col>
                                 </Row>

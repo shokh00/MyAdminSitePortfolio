@@ -22,7 +22,7 @@ export default function Settings() {
 
   return (
     <div className='settings' style={{display: "flex" , flexDirection: "column"}}>
-      <h3> Settings </h3>
+      <h3> Sozlamalar </h3>
       <Tabs defaultActiveKey="1" items={items} onChange={onChange} />
     </div>
   )

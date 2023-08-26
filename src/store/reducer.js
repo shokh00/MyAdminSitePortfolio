@@ -8,15 +8,25 @@ const slice = createSlice({
         oneProduct: {},
         UserSetting: [],
         StoreSetting: [],
+        OrderHistory: [],
+        DashboardInfo: [],
+        OneOrderHistory: [],
         loadings: {
-            tableLoading: true,
-            saveBtnLoading: false,
+            productTableLoading: true,
+            saveProductBtn: false,
+            UserSettingLoadign: false,
+            StoreSettingLoadign: false,
         },
     },
     reducers: {
         updateState: (state, action) => ({ ...state, ...action.payload }),
-    }
+        updateLoadings: (state, action) => ({
+            ...state, loadings: {
+                ...state.loadings, ...action.payload
+            }
+        }),
+    },
 });
 
-export const { updateState } = slice.actions;
+export const { updateState, updateLoadings } = slice.actions;
 export default slice.reducer;

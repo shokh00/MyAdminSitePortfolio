@@ -1,17 +1,17 @@
 import { useEffect, useState } from "react";
-import { Form, Button, Input, InputNumber, Drawer } from "antd";
-import { LeftOutlined, CameraFilled, DownloadOutlined, LoadingOutlined } from "@ant-design/icons";
+import { Form, Button, Input, InputNumber, Drawer, Spin } from "antd";
+import { LeftOutlined, CameraFilled, DownloadOutlined } from "@ant-design/icons";
 import { useDispatch, useSelector } from "react-redux";
-import { postProduct, remakeProduct } from "../../store/action";
+import { postProduct, remakeProduct } from "../../config/action";
 import { updateState } from "../../store/reducer";
 import axios from "axios";
 
 export default function AddProductModal({ newStatus }) {
   const dispatch = useDispatch();
-  const { isProductOpen, oneProduct, loadings } = useSelector(state => state.app);
+  const { isProductOpen, oneProduct, loadings: { saveProductBtn } , StoreSetting } = useSelector(state => state.app);
   const [image, setImage] = useState(null);
   const [useForm] = Form.useForm();
-  console.log(loadings);
+  const [loading, setLoading] = useState(false)
 
   useEffect(() => {
     if (newStatus) {
@@ -34,13 +34,25 @@ export default function AddProductModal({ newStatus }) {
   }
 
   const onFinish = value => {
-    const newValue = {
-      ...value,
-      price: value.price,
-      promotion: value.promotion,
-      stock: value.stock,
-      image
-    };
+    let newValue;
+    if (image == null) {
+      newValue = {
+        ...value,
+        price: value.price,
+        promotion: value.promotion,
+        stock: value.stock,
+        image: oneProduct.image
+      };
+    }
+    else {
+      newValue = {
+        ...value,
+        price: value.price,
+        promotion: value.promotion,
+        stock: value.stock,
+        image
+      };
+    }
     if (oneProduct?.id) {
       dispatch(remakeProduct({ ...newValue, id: oneProduct.id, status: oneProduct.status }));
     }
@@ -50,10 +62,11 @@ export default function AddProductModal({ newStatus }) {
   }
 
   function postImg(e) {
+    setLoading(true);
     let formData = new FormData()
     formData.append('image', e.target.files[0])
     axios({
-      url: 'https://f-07.onrender.com/api/v1/file',
+      url: 'https://f-07-backend.vercel.app/api/v1/file',
       data: formData,
       method: 'post',
       headers: {
@@ -62,9 +75,8 @@ export default function AddProductModal({ newStatus }) {
       }
     }).then(res => setImage(res.data.url))
       .catch(err => console.log(err))
+      .finally(() => setLoading(false));
   }
-
-  console.log(image);
 
   return (
     <>
@@ -72,16 +84,19 @@ export default function AddProductModal({ newStatus }) {
       <Drawer
         forceRender
         footer={
-          <Button onClick={() => useForm.submit()} loading={loadings.saveBtnLoading} type="primary"> <DownloadOutlined /> Save Product </Button>
+          <Button onClick={() => useForm.submit()} loading={saveProductBtn} type="primary"> <DownloadOutlined /> Save Product </Button>
         }
         style={{ textAlign: "center", alignItems: "center" }} closeIcon={<LeftOutlined />} title="Add a New Product" onClose={toggleOpen} open={isProductOpen}
       >
-        <input id="input" type="file" onChange={postImg} style={{ display: "none" }} />
-        <label htmlFor="input">
-          <CameraFilled className="circle" style={{ fontSize: 18 }} />
-        </label>
-        {image && <img src={image} alt="error" width={100} />}
-        <Form form={useForm} layout="vertical" onFinish={onFinish} name="form">
+        <div className="newImg">
+          <input id="input" type="file" onChange={postImg} style={{ display: "none" }} />
+          <label htmlFor="input">
+            <CameraFilled className="circle" style={{ fontSize: 18 }} />
+          </label>
+          {image && <img src={image} alt="..." width={100} height={100} style={{margin: "0 0 0 10px"}} />}
+          <Spin spinning={loading} style={{height: "100px" , alignItems: "center" , display: "flex" , margin: "0 0 0 10px"}} />
+        </div>
+        <Form form={useForm} layout="vertical" onFinish={onFinish} name="form" className="form">
           <Form.Item name="productName" label="Product Name" rules={[{ required: true, message: "productName" }]}>
             <Input />
           </Form.Item>
@@ -97,7 +112,7 @@ export default function AddProductModal({ newStatus }) {
           <Form.Item name="stock" label="stock" rules={[{ required: true, message: "stock" }]}>
             <InputNumber style={{ width: "100%" }} />
           </Form.Item>
-          <Form.Item name="price" label="price ($)" rules={[{ required: true, message: "price" }]}>
+          <Form.Item name="price" label={`price (${StoreSetting.currency})`} rules={[{ required: true, message: "price" }]}>
             <InputNumber style={{ width: "100%" }} />
           </Form.Item>
         </Form>

@@ -5,6 +5,6 @@ export default axios.create({
     headers: {
         apiKey: '2ap7JQwe9l58hUtfGsHT'
     },
-    timeout: 30000,
+    timeout: 6000,
     timeoutErrorMessage: "Your network speed is too weak"
 });

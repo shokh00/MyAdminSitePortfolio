@@ -1,15 +1,24 @@
-  import { Input, Space, Table, Button, Dropdown } from "antd";
-import { deleteProduct, SwitchStatus } from "../../store/action";
+import { Input, Space, Button, Dropdown, Spin, Badge } from "antd";
+import { deleteProduct, getProduct, SwitchStatus } from "../../config/action";
 import { useDispatch, useSelector } from "react-redux";
 import { EllipsisOutlined, EditOutlined, DeleteOutlined } from "@ant-design/icons";
 import { updateState } from "../../store/reducer";
 import Modal from "./ModalJS";
+import { styled } from "styled-components";
+import { useEffect, useState } from "react";
+import moment from "moment/moment";
+import * as Icons from "../../icons";
 const { Search } = Input;
 
 export default function Products() {
   const dispatch = useDispatch();
-  const { products, oneProduct, loadings: { tableLoading } } = useSelector(state => state.app);
-  const onSearch = (value) => console.log(value);
+  const { products, oneProduct, StoreSetting, loadings: { productTableLoading } } = useSelector(state => state.app);
+  const [search, setSearch] = useState("");
+  const findProduct = products.filter(item => item.productName == search);
+
+  useEffect(() => {
+    dispatch(getProduct());
+  }, [dispatch]);
 
   const fall = (item, e) => {
     if (e.key == "1") {
@@ -17,12 +26,6 @@ export default function Products() {
       dispatch(updateState({ oneProduct: item }));
     }
     else if (e.key == "2") {
-      if (item.status == true) {
-        e.domEvent.target.outerHTML = `<span style=\"color: green;\"> Enabled </span>`
-      }
-      else if (item.status == false) {
-        e.domEvent.target.outerHTML = `<span style=\"color: rgb(255, 105, 180);\"> Disabled </span>`
-      }
       dispatch(SwitchStatus(item));
     }
     else {
@@ -30,90 +33,17 @@ export default function Products() {
     }
   }
 
-  console.log(products);
-
-  const columns = [
-    {
-      title: "Image", dataIndex: "image", key: "image",
-      render: (item) => <img width={100} height={100} src={item} alt="noImage" />
-    },
-    {
-      title: "Product name",
-      dataIndex: "productName",
-      key: "product_name",
-      sorter: (a, b) => a.product_name - b.product_name,
-    },
-    {
-      title: "Description",
-      dataIndex: "description",
-      key: "description",
-      width: "100px"
-    },
-    {
-      title: "Price",
-      dataIndex: "price",
-      key: "price",
-      sorter: (a, b) => a.price - b.price
-    },
-    {
-      title: "Stock",
-      dataIndex: "stock",
-      key: "stock",
-      sorter: (a, b) => a.stock - b.stock,
-      width: "50px"
-    },
-    {
-      title: "Date",
-      dataIndex: "date",
-      key: "date",
-      width: "50px"
-    },
-    {
-      title: `Status`,
-      dataIndex: "status",
-      key: "",
-      width: 200,
-      render: item => <button className={item.status == true ? "enabled" : "disabled"} >
-        {item.status == true ? "Enabled" : "Disabled"}
-      </button>
-    },
-    {
-      title: "Settings",
-      key: "settings",
-      width: "50px",
-      render: (item) => <Dropdown
-        menu={{
-          items,
-          onClick: (e) => fall(item, e)
-        }}
-        placement="bottomRight"
-        arrow
-      >
-        <Button><EllipsisOutlined /></Button>
-      </Dropdown>,
-    }
-  ]
-
-  const items = [
-    {
-      key: '1',
-      label: <span style={{ color: "#1677FF" }}>Edit</span>,
-      icon: <EditOutlined style={{ color: "#1677FF" }} />,
-    },
-    {
-      key: "2",
-      label: <span style={{ color: "#FF69B4" }}> Disabled </span>,
-      icon: <i className="bx bxs-checkbox" style={{ color: "transparent", border: "1px solid lightgray" }}></i>,
-    },
-    {
-      key: '3',
-      label: <span style={{ color: "red" }}>Delete</span>,
-      icon: <DeleteOutlined style={{ color: "red" }} />,
-    }
-  ]
+  const MyDiv = styled.div`
+    position: absolute;
+    top: 50%;
+    left: 50%;
+  `
 
   return (
     <div className='product'>
+      <MyDiv>
+        <Spin spinning={productTableLoading} tip="Loading" size="large" />
+      </MyDiv>
       <div className='header'>
         <h3>
           Product List
@@ -121,7 +51,7 @@ export default function Products() {
         <Space>
           <Search
             placeholder="input search text"
-            onSearch={onSearch}
+            onSearch={setSearch}
             className="search"
             style={{
               width: 200,
@@ -131,15 +61,154 @@ export default function Products() {
         </Space>
       </div>
       <div className="body">
-        <Table
-          rowKey={"id"}
-          className="table"
-          columns={columns} pagination={true}
-          dataSource={products}
-          loading={tableLoading}
-          style={{width: "100vw"}}
-        />
+        <table className="table">
+          <thead>
+            <tr>
+              <th className="col th-col-1">Image</th>
+              <th className="col th-col-2">Product name</th>
+              <th className="col th-col-3">Description</th>
+              <th className="col th-col-4">Price</th>
+              <th className="col th-col-5">Stock</th>
+              <th className="col th-col-6">Date</th>
+              <th className="col th-col-7">Status</th>
+              <th className="col th-col-8"><DeleteOutlined /></th>
+            </tr>
+          </thead>
+          <tbody>
+            {
+              search == "" ? products.map(item => (
+                <tr key={item.id} className="asdsad">
+                  <td className="col col-1">
+                    <img src={item.image} height={75} width={125} alt="..." />
+                  </td>
+                  <td className="col col-2">
+                    <p>{item.productName}</p>
+                  </td>
+                  <td className="col col-3">
+                    <p>
+                      {item.description}
+                    </p>
+                  </td>
+                  <td className="col col-4">
+                    {StoreSetting.currency}{item.price}
+                  </td>
+                  <td className="col col-5">
+                    <Badge showZero count={item.stock} style={{
+                      color: "#3A36DB",
+                      background: "#D8D7F8"
+                    }} />
+                  </td>
+                  <td className="col col-6">
+                    <Icons.calendar color={"#03A89E"} />
+                    {moment(item.date).format('ll')}
+                  </td>
+                  <td>
+                    <button className={item.status ? "enabled" : "disabled"}>
+                      {
+                        item.status ? "Enabled" : "Disabled"
+                      }
+                    </button>
+                  </td>
+                  <td>
+                    <Dropdown
+                      menu={{
+                        items: [
+                          {
+                            key: '1',
+                            label: <span style={{ color: "#1677FF" }}>Edit</span>,
+                            icon: <EditOutlined style={{ color: "#1677FF" }} />,
+                          },
+                          {
+                            key: "2",
+                            label: <span style={item.status ? { color: "red" } : { color: "green" }}> {item.status ? "Disabled" : "Enabled"}</span>,
+                            icon: <svg width="14" height="14" viewBox="0 0 8 8" fill="none" xmlns="http://www.w3.org/2000/svg">
+                              <path d="M7.18506 1.86736C7.18506 1.89569 6.963 4.704 6.83616 5.88607C6.75673 6.61148 6.2891 7.05189 5.58765 7.06397C5.04828 7.07606 4.52108 7.08022 4.00198 7.08022C3.45087 7.08022 2.91191 7.07606 2.38876 7.06397C1.71081 7.04772 1.24277 6.59939 1.16739 5.88607C1.03691 4.69983 0.818896 1.89569 0.814844 1.86736C0.810791 1.78153 0.838347 1.70028 0.894269 1.63486C0.94938 1.57361 1.02881 1.53736 1.11228 1.53736C2.84452 0.317717 5.15865 0.318834 6.89168 1.53736C6.97475 1.53736 7.05012 1.57361 7.10969 1.63486C7.16521 1.70028 7.19317 1.78153 7.18506 1.86736Z" fill={item.status ? "#FF69B4" : "#2FE5A7"} />
+                            </svg>
+                          },
+                          {
+                            key: '3',
+                            label: <span style={{ color: "red" }}>Delete</span>,
+                            icon: <DeleteOutlined style={{ color: "red" }} />,
+                          }
+                        ],
+                        onClick: (e) => fall(item, e)
+                      }}
+                      placement="bottomRight"
+                      arrow
+                    >
+                      <Button><EllipsisOutlined /></Button>
+                    </Dropdown>
+                  </td>
+                </tr>
+              ))
+                :
+                findProduct.map(item => (
+                  <tr key={item.id} className="asdsad">
+                    <td className="col col-1">
+                      <img src={item.image} height={75} width={125} alt="..." />
+                    </td>
+                    <td className="col col-2">
+                      <p>{item.productName}</p>
+                    </td>
+                    <td className="col col-3">
+                      <p>
+                        {item.description}
+                      </p>
+                    </td>
+                    <td className="col col-4">
+                      {StoreSetting.currency}{item.price}
+                    </td>
+                    <td className="col col-5">
+                      <Badge showZero count={item.stock} style={{
+                        color: "#3A36DB",
+                        background: "#D8D7F8"
+                      }} />
+                    </td>
+                    <td className="col col-6">
+                      <Icons.calendar color={"#03A89E"} />
+                      {moment(item.date).format('ll')}
+                    </td>
+                    <td>
+                      <button className={item.status ? "enabled" : "disabled"}>
+                        {
+                          item.status ? "Enabled" : "Disabled"
+                        }
+                      </button>
+                    </td>
+                    <td>
+                      <Dropdown
+                        menu={{
+                          items: [
+                            {
+                              key: '1',
+                              label: <span style={{ color: "#1677FF" }}>Edit</span>,
+                              icon: <EditOutlined style={{ color: "#1677FF" }} />,
+                            },
+                            {
+                              key: "2",
+                              label: <span style={item.status ? { color: "red" } : { color: "green" }}> {item.status ? "Disabled" : "Enabled"}</span>,
+                              icon: <Icons.square color={item.status ? "#FF69B4" : "#2FE5A7"} />
+                            },
+                            {
+                              key: '3',
+                              label: <span style={{ color: "red" }}>Delete</span>,
+                              icon: <DeleteOutlined style={{ color: "red" }} />,
+                            }
+                          ],
+                          onClick: (e) => fall(item, e)
+                        }}
+                        placement="bottomRight"
+                        arrow
+                      >
+                        <Button><EllipsisOutlined /></Button>
+                      </Dropdown>
+                    </td>
+                  </tr>
+                ))
+            }
+          </tbody>
+        </table>
       </div>
-    </div>
+    </div >
   )
 }
