@@ -1,10 +1,8 @@
-import { Button, Card, Dropdown, Form, Input, Select, Space, message } from 'antd'
+import { Button, Card, Form, Input, message } from 'antd'
 import { useEffect, useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
-import { signUp } from '../config/action';
 import call from '../config/call';
-const { Option } = Select;
 
 export default function SignUp(props) {
     const navigation = useNavigate();
@@ -12,15 +10,6 @@ export default function SignUp(props) {
     const [emailDomain, setEmailDomain] = useState("");
     const dispatch = useDispatch();
     const token = JSON.parse(localStorage.getItem("token"))
-
-    const selectAfter = (
-        <Select defaultValue={""} onSelect={(e) => setEmailDomain(e)}>
-            <Option value="">Own</Option>
-            <Option value=".com">.com</Option>
-            <Option value=".ru">.ru</Option>
-            <Option value=".org">.org</Option>
-        </Select>
-    );
 
     useEffect(() => {
         call.get(`/login/${token}`, {
@@ -37,7 +26,7 @@ export default function SignUp(props) {
     }, []);
 
     const onFinish = value => {
-        call.post("/login", { ...value, email: value.email + emailDomain }, {
+        call.post("/login", value, {
         })
             .then(res => {
                 localStorage.setItem("token", JSON.stringify(res.data.token));
@@ -61,7 +50,7 @@ export default function SignUp(props) {
                 <h2>Sign in to your account</h2>
                 <Form form={form} onFinish={onFinish} layout='vertical' style={{ margin: "20px 0 0 0" }}>
                     <Form.Item name={"email"} rules={[{ required: true }]} label={"Email address"}>
-                        <Input addonAfter={selectAfter} />
+                        <Input />
                     </Form.Item>
                     <Form.Item name={"password"} rules={[{ required: true, min: 4 }]} label={"Password"}>
                         <Input.Password />
