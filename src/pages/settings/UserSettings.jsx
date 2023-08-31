@@ -19,7 +19,7 @@ export default function UserSettings() {
             password: UserSetting.password,
             phone: UserSetting.phone
         });
-    }, [UserSetting]);
+    }, [dispatch]);
 
     function postImg(e) {
         setLoading(true);

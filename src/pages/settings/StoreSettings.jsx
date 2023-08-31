@@ -20,7 +20,7 @@ export default function UserSettings() {
             supportPhone: StoreSetting.supportPhone,
             address: StoreSetting.address
         });
-    }, [StoreSetting]);
+    }, [dispatch]);
 
     function postImg(e) {
         console.log("working");

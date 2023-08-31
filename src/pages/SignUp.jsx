@@ -8,11 +8,11 @@ export default function SignUp(props) {
     const navigation = useNavigate();
     const [form] = Form.useForm();
     const [emailDomain, setEmailDomain] = useState("");
-    const dispatch = useDispatch();
-    const token = JSON.parse(localStorage.getItem("token"))
+    // const dispatch = useDispatch();
+    // const token = localStorage.getItem("token");
 
     useEffect(() => {
-        call.get(`/login/${token}`, {
+        call.get(`/login`, {
             validateStatus: (status) => {
                 return status < 500; // Resolve only if the status code is less than 500
             }
@@ -20,7 +20,7 @@ export default function SignUp(props) {
             if (!res.data.success) {
                 return
             } else {
-                navigation("/sign");
+                navigation("/dashboard");
             }
         })
     }, []);
@@ -29,9 +29,9 @@ export default function SignUp(props) {
         call.post("/login", value, {
         })
             .then(res => {
-                localStorage.setItem("token", JSON.stringify(res.data.token));
+                localStorage.setItem("token", res.headers["x-auth-token"]); 
                 message.success("Xush kelibsiz")
-                navigation("/dashboard")
+                // navigation("/dashboard")
             })
             .catch(err => {
                 if (err.response.status == 422) {
