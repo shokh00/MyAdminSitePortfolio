@@ -15,7 +15,7 @@ export default function Dashboard() {
 
   useEffect(() => {
     dispatch(getDashboardInfo());
-  }, [dispatch]);
+  }, []);
 
   const columns = [
     {

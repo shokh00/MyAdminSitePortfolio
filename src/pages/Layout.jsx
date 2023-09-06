@@ -16,11 +16,8 @@ const MyLayout = () => {
     const dispatch = useDispatch();
 
     useEffect(() => {
-        if (!token) {
-            return navigation("/sign");
-        } 
         dispatch(getStoreInfo());
-    }, [Router]);
+    }, []);
 
     const items = [
         {

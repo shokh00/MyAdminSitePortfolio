@@ -61,6 +61,9 @@ export default function AddProductModal({ newStatus }) {
     }
   }
 
+  // export const TOKEN_KEY = 'access-token';
+  // export const TOKEN = 'x-auth-token';
+
   function postImg(e) {
     setLoading(true);
     let formData = new FormData()
@@ -72,6 +75,7 @@ export default function AddProductModal({ newStatus }) {
       headers: {
         apiKey: "2ap7JQwe9l58hUtfGsHT",
         "ngrok-skip-browser-warning": true,
+        // TOKEN: localStorage.getItem(TOKEN_KEY)
       }
     }).then(res => setImage(res.data.url))
       .catch(err => console.log(err))

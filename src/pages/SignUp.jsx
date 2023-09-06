@@ -3,6 +3,7 @@ import { useEffect, useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { Router, useNavigate } from 'react-router-dom';
 import call from '../config/call';
+import history from '../history';
 import axios from 'axios';
 
 export default function SignUp(props) {
@@ -29,16 +30,20 @@ export default function SignUp(props) {
     }, []);
 
     const onFinish = value => {
-        call.post("/login", value)
-            .then(res => {
-                localStorage.setItem("x-auth-token", res.headers["x-auth-token"]);
-                // navigation("/dashboard");
-                window.history.pushState("/dashboard");
-                window.location.reload();
-            })
-            .catch(err => {
-                message.error(err.response?.data?.message);
-            });
+        try {
+            call.post("/login", value)
+                .then(res => {
+                    localStorage.setItem("x-auth-token", res.headers["x-auth-token"]);
+                    // navigation("/dashboard");
+                    history.push("/dashboard");
+                    window.location.reload();
+                })
+                .catch(err => {
+                    message.error(err.response?.data?.message);
+                });
+        } catch (error) {
+            console.log(error);
+        }
     }
 
     return (
