@@ -3,7 +3,7 @@ import DemoArea from "../charts/TableArea";
 import DemoPie from "../charts/PieChart";
 import { EllipsisOutlined } from "@ant-design/icons";
 import { useDispatch, useSelector } from "react-redux";
-import { Table, Row, Col, Rate, Badge, Switch } from "antd";
+import { Table, Row, Col, Rate, Badge } from "antd";
 import { getDashboardInfo } from "../../config/action";
 import { useEffect } from "react";
 

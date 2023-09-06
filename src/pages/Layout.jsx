@@ -12,27 +12,14 @@ const MyLayout = () => {
     const { StoreSetting } = useSelector(state => state.app);
     const navigation = useNavigate();
     const [collapsed, setCollapsed] = useState(window.innerWidth > 710 ? false : true);
-    const token = localStorage.getItem("token");
+    const token = localStorage.getItem("x-auth-token");
     const dispatch = useDispatch();
 
     useEffect(() => {
+        if (!token) {
+            return navigation("/sign");
+        } 
         dispatch(getStoreInfo());
-        // if (!token) {
-        //     return navigation("/sign");
-        // } else {
-        //     call.get(`/login`, {
-        //         validateStatus: (status) => {
-        //             return status < 500;
-        //         }
-        //     })
-        //         .then(res => {
-        //             if (res.data.success) {
-        //                 return
-        //             } else {
-        //                 navigation("/sign");
-        //             }
-        //         })
-        // }
     }, [Router]);
 
     const items = [

@@ -1,45 +1,43 @@
 import { Button, Card, Form, Input, message } from 'antd'
 import { useEffect, useState } from 'react';
 import { useDispatch } from 'react-redux';
-import { useNavigate } from 'react-router-dom';
+import { Router, useNavigate } from 'react-router-dom';
 import call from '../config/call';
+import axios from 'axios';
 
 export default function SignUp(props) {
     const navigation = useNavigate();
     const [form] = Form.useForm();
     const [emailDomain, setEmailDomain] = useState("");
-    // const dispatch = useDispatch();
-    // const token = localStorage.getItem("token");
+    const dispatch = useDispatch();
+    const token = localStorage.getItem("x-auth-token");
 
     useEffect(() => {
-        call.get(`/login`, {
-            validateStatus: (status) => {
-                return status < 500; // Resolve only if the status code is less than 500
-            }
-        }).then(res => {
-            if (!res.data.success) {
-                return
-            } else {
-                navigation("/dashboard");
-            }
-        })
+        if (token) {
+            call.get(`/login`, {
+                validateStatus: (status) => {
+                    return status < 500; // Resolve only if the status code is less than 500
+                }
+            }).then(res => {
+                if (!res.data.id) {
+                    return
+                } else {
+                    navigation("/dashboard");
+                }
+            })
+        };
     }, []);
 
     const onFinish = value => {
-        call.post("/login", value, {
-        })
+        call.post("/login", value)
             .then(res => {
-                localStorage.setItem("token", res.headers["x-auth-token"]); 
-                message.success("Xush kelibsiz")
-                // navigation("/dashboard")
+                localStorage.setItem("x-auth-token", res.headers["x-auth-token"]);
+                // navigation("/dashboard");
+                window.history.pushState("/dashboard");
+                window.location.reload();
             })
             .catch(err => {
-                if (err.response.status == 422) {
-                    message.error("email notog`ri")
-                }
-                else if (err.response.data.message == "Password error") {
-                    message.error("password notog`ri")
-                }
+                message.error(err.response?.data?.message);
             });
     }
 
