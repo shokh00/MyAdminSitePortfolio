@@ -20,6 +20,8 @@ export default function Products() {
     dispatch(getProduct());
   }, [dispatch]);
 
+  console.log(products);
+
   const fall = (item, e) => {
     if (e.key == "1") {
       dispatch(updateState({ isProductOpen: true }));
@@ -61,44 +63,44 @@ export default function Products() {
         </Space>
       </div>
       <div className="body">
-        <table className="table">
+        <table>
           <thead>
             <tr>
-              <th className="col th-col-1">Image</th>
-              <th className="col th-col-2">Product name</th>
-              <th className="col th-col-3">Description</th>
-              <th className="col th-col-4">Price</th>
-              <th className="col th-col-5">Stock</th>
-              <th className="col th-col-6">Date</th>
-              <th className="col th-col-7">Status</th>
-              <th className="col th-col-8"><DeleteOutlined /></th>
+              <th>Image</th>
+              <th>Product name</th>
+              <th>Description</th>
+              <th>Price</th>
+              <th>Stock</th>
+              <th>Date</th>
+              <th>Status</th>
+              <th><DeleteOutlined /></th>
             </tr>
           </thead>
           <tbody>
             {
               search == "" ? products.map(item => (
-                <tr key={item.id} className="asdsad">
-                  <td className="col col-1">
+                <tr key={item.id}>
+                  <td>
                     <img src={item.image} height={75} width={125} alt="..." />
                   </td>
-                  <td className="col col-2">
-                    <p>{item.productName}</p>
+                  <td>
+                    <h3>{item.productName}</h3>
                   </td>
-                  <td className="col col-3">
+                  <td>
                     <p>
                       {item.description}
                     </p>
                   </td>
-                  <td className="col col-4">
-                    {StoreSetting.currency}{item.price}
+                  <td>
+                    {item.price} {StoreSetting.currency}
                   </td>
-                  <td className="col col-5">
+                  <td>
                     <Badge showZero count={item.stock} style={{
                       color: "#3A36DB",
                       background: "#D8D7F8"
                     }} />
                   </td>
-                  <td className="col col-6">
+                  <td>
                     <Icons.calendar color={"#03A89E"} />
                     {moment(item.date).format('ll')}
                   </td>
@@ -143,28 +145,28 @@ export default function Products() {
               ))
                 :
                 findProduct.map(item => (
-                  <tr key={item.id} className="asdsad">
-                    <td className="col col-1">
+                  <tr>
+                    <td>
                       <img src={item.image} height={75} width={125} alt="..." />
                     </td>
-                    <td className="col col-2">
-                      <p>{item.productName}</p>
+                    <td>
+                      <h3>{item.productName}</h3>
                     </td>
-                    <td className="col col-3">
+                    <td>
                       <p>
                         {item.description}
                       </p>
                     </td>
-                    <td className="col col-4">
-                      {StoreSetting.currency}{item.price}
+                    <td>
+                      {item.price} {StoreSetting.currency}
                     </td>
-                    <td className="col col-5">
+                    <td>
                       <Badge showZero count={item.stock} style={{
                         color: "#3A36DB",
                         background: "#D8D7F8"
                       }} />
                     </td>
-                    <td className="col col-6">
+                    <td>
                       <Icons.calendar color={"#03A89E"} />
                       {moment(item.date).format('ll')}
                     </td>
@@ -187,7 +189,9 @@ export default function Products() {
                             {
                               key: "2",
                               label: <span style={item.status ? { color: "red" } : { color: "green" }}> {item.status ? "Disabled" : "Enabled"}</span>,
-                              icon: <Icons.square color={item.status ? "#FF69B4" : "#2FE5A7"} />
+                              icon: <svg width="14" height="14" viewBox="0 0 8 8" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                <path d="M7.18506 1.86736C7.18506 1.89569 6.963 4.704 6.83616 5.88607C6.75673 6.61148 6.2891 7.05189 5.58765 7.06397C5.04828 7.07606 4.52108 7.08022 4.00198 7.08022C3.45087 7.08022 2.91191 7.07606 2.38876 7.06397C1.71081 7.04772 1.24277 6.59939 1.16739 5.88607C1.03691 4.69983 0.818896 1.89569 0.814844 1.86736C0.810791 1.78153 0.838347 1.70028 0.894269 1.63486C0.94938 1.57361 1.02881 1.53736 1.11228 1.53736C2.84452 0.317717 5.15865 0.318834 6.89168 1.53736C6.97475 1.53736 7.05012 1.57361 7.10969 1.63486C7.16521 1.70028 7.19317 1.78153 7.18506 1.86736Z" fill={item.status ? "#FF69B4" : "#2FE5A7"} />
+                              </svg>
                             },
                             {
                               key: '3',

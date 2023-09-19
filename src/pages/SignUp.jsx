@@ -34,12 +34,11 @@ export default function SignUp(props) {
             call.post("/login", value)
                 .then(res => {
                     localStorage.setItem("x-auth-token", res.headers["x-auth-token"]);
-                    // navigation("/dashboard");
-                    history.push("/dashboard");
+                    history.push("/");
                     window.location.reload();
                 })
                 .catch(err => {
-                    message.error(err.response?.data?.message);
+                    message.error(err.response?.data?.message || "Email Error");
                 });
         } catch (error) {
             console.log(error);

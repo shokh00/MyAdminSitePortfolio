@@ -57,12 +57,10 @@ export default function AddProductModal({ newStatus }) {
       dispatch(remakeProduct({ ...newValue, id: oneProduct.id, status: oneProduct.status }));
     }
     else {
+      console.log(newValue);
       dispatch(postProduct(newValue));
     }
   }
-
-  // export const TOKEN_KEY = 'access-token';
-  // export const TOKEN = 'x-auth-token';
 
   function postImg(e) {
     setLoading(true);
@@ -74,8 +72,7 @@ export default function AddProductModal({ newStatus }) {
       method: 'post',
       headers: {
         apiKey: "2ap7JQwe9l58hUtfGsHT",
-        "ngrok-skip-browser-warning": true,
-        // TOKEN: localStorage.getItem(TOKEN_KEY)
+        "x-auth-token": localStorage.getItem("x-auth-token")
       }
     }).then(res => setImage(res.data.url))
       .catch(err => console.log(err))

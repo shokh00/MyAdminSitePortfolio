@@ -5,12 +5,12 @@ import { Link } from 'react-router-dom'
 export default function NotFoundPage() {
   return (
     <div className='notFound'>
-      <div class='error'>
-        <h1 class='code'>404</h1>
-        <h2 class='desc'>Ops... There's something wrong.</h2>
+      <div className='error'>
+        <h1 className='code'>404</h1>
+        <h2 className='desc'>Ops... There's something wrong.</h2>
       </div>
       <Button className='not-found-btn' type='primary'>
-        <Link to={"/dashboard"}>
+        <Link to={"/"}>
           Go to Home
         </Link>
       </Button>

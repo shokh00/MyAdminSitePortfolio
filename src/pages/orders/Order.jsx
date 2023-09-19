@@ -52,11 +52,13 @@ export default function Order() {
                     <tbody>
                         {
                             search == "" ?
-                                OrderHistory.map(item => {
-                                    return <tr key={item.id} className="order-table-tr">
+                                OrderHistory.map((item, index) => {
+                                    return <tr key={index} className="order-table-tr">
                                         <td className="order-table-td order-table-td-1"><p>{item.customer.fullName}</p></td>
                                         <td className="order-table-td order-table-td-2">+998{item.customer.phone}</td>
-                                        <td className="order-table-td order-table-td-3"><Icons.location /> {item.customer.address ? item.customer?.address.avenue : "in Pick Up"}</td>
+                                        <td className="order-table-td order-table-td-3">
+                                            {item.customer.address ? <div className="orderM"><Icons.delivery /> {item.customer?.address.avenue}</div> : <div className="orderM"><Icons.location /> Pick Up</div>}
+                                        </td>
                                         <td className="order-table-td order-table-td-4">{item.amount}</td>
                                         <td className="order-table-td order-table-td-5">
                                             <Icons.calendar color={"#03A89E"} />

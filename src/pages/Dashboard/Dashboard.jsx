@@ -22,7 +22,7 @@ export default function Dashboard() {
       title: "Product Name",
       key: "productName",
       render: item => (
-        <div className="dashboardTableDiv">
+        <div className="dashboardTableDiv" key={item.index}>
           <img src={item.image} alt="..." />
           <p>{item.productName}</p>
         </div>
@@ -116,7 +116,7 @@ export default function Dashboard() {
         </Row>
       </div>
       <div className="tables">
-        <Row gutter={windowsWidth < 768 ? [0, 20] : [30, 30]} style={{ width: "100vw" }}>
+        <Row gutter={windowsWidth < 768 ? [0, 20] : [30, 30]}>
           <Col xs={24} sm={24} md={12} lg={12} xl={16} style={{ paddingRight: "0px" }}>
             <div className="latestOrderedProducts">
               <div className="head">
@@ -125,10 +125,13 @@ export default function Dashboard() {
               </div>
               <Table
                 className="table"
-                sticky rowKey={"id"}
+                sticky
                 dataSource={latestProduct}
                 columns={columns}
                 pagination={false}
+                scroll={{
+                  y: 240,
+                }}
               />
             </div>
           </Col>
@@ -141,17 +144,14 @@ export default function Dashboard() {
               <div className="onlyTwo">
                 {
                   DashboardInfo.topProducts?.map(item => {
-                    return <>
-                      <div className="aProduct" style={windowsWidth < 470 ? { flexDirection: "column", alignItems: "center", textAlign: "center" } : { display: "flex" }}>
-                        <img src={item.image} alt="..." />
-                        <div className="about">
-                          <h3>{item.productName}</h3>
-                          <Rate />
-                          <h3>{item.price}{StoreSetting.currency}</h3>
-                        </div>
+                    return <div key={item.index} className="aProduct" style={windowsWidth < 470 ? { flexDirection: "column", alignItems: "center", textAlign: "center" } : { display: "flex" }}>
+                      <img src={item.image} alt="..." />
+                      <div className="about">
+                        <h3>{item.productName}</h3>
+                        <Rate />
+                        <h3>{item.price}{StoreSetting.currency}</h3>
                       </div>
-                      <hr />
-                    </>
+                    </div>
                   })
                 }
               </div>

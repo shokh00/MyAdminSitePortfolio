@@ -11,8 +11,8 @@ import SignUp from "./pages/SignUp";
 export default () => (
     <Routes>
         <Route path="/" element={<Layout />}>
+            <Route index element={<Dasboard />} />
             <Route path="product" element={<Products />} />
-            <Route path="dashboard" element={<Dasboard />} />
             <Route path="order" element={<Order />} />
             <Route path="order/:id" element={<OneOrder />} />
             <Route path="setting" element={<Setting />} />

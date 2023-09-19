@@ -13,13 +13,13 @@ export default function UserSettings() {
 
     useEffect(() => {
         dispatch(getUserInfo());
-        useForm.setFieldsValue({
-            fullName: UserSetting.fullName,
-            email: UserSetting.email,
-            password: UserSetting.password,
-            phone: UserSetting.phone
-        });
-    }, [dispatch]);
+        // useForm.setFieldsValue({
+        //     fullName: UserSetting?.fullName,
+        //     email: UserSetting?.email,
+        //     password: UserSetting?.password,
+        //     phone: UserSetting?.phone
+        // });
+    }, []);
 
     function postImg(e) {
         setLoading(true);
@@ -84,22 +84,22 @@ export default function UserSettings() {
                                 <Row gutter={[30, 0]}>
                                     <Col xs={24} sm={12} md={12} lg={12} xl={12} >
                                         <Form.Item name="fullName" label="fullName" >
-                                            <Input className='input' />
+                                            <Input className='input' placeholder={UserSetting.fullName} />
                                         </Form.Item>
                                     </Col>
                                     <Col xs={24} sm={12} md={12} lg={12} xl={12} >
-                                        <Form.Item name="email" label="Email" >
-                                            <Input className='input' />
+                                        <Form.Item name="email" label="Email">
+                                            <Input className='input' placeholder={UserSetting.email} />
                                         </Form.Item>
                                     </Col>
                                     <Col xs={24} sm={12} md={12} lg={12} xl={12}>
                                         <Form.Item rules={[{ min: 8 }]} name="password" label="Password" >
-                                            <Input className='input' />
+                                            <Input className='input' placeholder={UserSetting.password} />
                                         </Form.Item>
                                     </Col>
                                     <Col xs={24} sm={12} md={12} lg={12} xl={12}>
                                         <Form.Item rules={[{ min: 7 }]} name="phone" label="Phone" >
-                                            <Input addonBefore="+998" type='number' className='input' />
+                                            <Input addonBefore="+998" type='number' className='input' placeholder={UserSetting.phone} />
                                         </Form.Item>
                                     </Col>
                                     <Col xs={24} sm={12} md={12} lg={12} xl={12} style={{ display: "flex", alignItems: "end" }}>

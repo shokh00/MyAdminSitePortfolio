@@ -16,6 +16,8 @@ export default function OneOrder() {
     dispatch(getOneOrder(id));
   }, []);
 
+  console.log(OneOrderHistory);
+  console.log(StoreSetting);
 
   const columns = [
     {
@@ -65,7 +67,7 @@ export default function OneOrder() {
 
   return (
     <Row>
-      <Col xs={24} sm={20} md={16} lg={12} xl={12}>
+      <Col span={24}>
         <Card
           className="oneOrderCard"
           title={
@@ -79,47 +81,46 @@ export default function OneOrder() {
           }
         >
           <div className="oneOrderCardBody">
-            <div style={{ display: "flex", justifyContent: "space-between" }}>
+            <div className="between__div head">
+              <img src={StoreSetting?.image} alt="" />
               <div>
-                <img src={StoreSetting.image} width={75} height={75} alt="" />
-                <h3>{OneOrderHistory.orderMode}</h3>
-                <div className="userAddress">
-                  {
-                    OneOrderHistory.orderMode == "PICKUP" ?
-                      <>
-                        <h4 className="name">{OneOrderHistory.customer?.fullName}</h4>
-                        <h4>{OneOrderHistory.customer?.pickupTime}</h4>
-                      </> :
-                      <>
-                        <h4 className="name">{OneOrderHistory.customer?.fullName}</h4>
-                        <h4>{OneOrderHistory.customer?.address.avenue}</h4>
-                        <h4>{OneOrderHistory.customer?.address.city}</h4>
-                        <h4>{OneOrderHistory.customer?.address.houseNo}</h4>
-                        <h4>{OneOrderHistory.customer?.address.street}</h4>
-                      </>
-                  }
-                </div>
-                <h4 style={{ margin: "10px 0 0 0" }}>+998 {OneOrderHistory.customer?.phone}</h4>
-              </div>
-              <div style={{ textAlign: "end" }}>
-                <div className="storeInfo">
-                  <h4>{StoreSetting.supportEmail}</h4>
-                  <h4>{StoreSetting.supportPhone}</h4>
-                </div>
-                <h2 style={{ margin: "20px 0 0 0 " }}>Invoice</h2>
-                <div className="orderInfo">
-                  <div>
-                    <h4>invoice no:</h4>
-                    <span>{OneOrderHistory.id}</span>
-                  </div>
-                  <div style={{ margin: "15px 0 0 0" }}>
-                    <h4>invoice date</h4>
-                    <span>{moment(OneOrderHistory.date).format("ll")}</span>
-                  </div>
-                </div>
+                <p>{StoreSetting?.supportEmail}</p>
+                <p>+{StoreSetting?.supportPhone}</p>
               </div>
             </div>
-            <Table style={{margin: "15px 0 0 0"}} pagination={false} columns={columns} dataSource={OneOrderHistory.products} />
+            <div className="between__div">
+              <div style={{textAlign: "start"}}>
+                <h2>{OneOrderHistory?.orderMode}</h2>
+                {
+                  OneOrderHistory.orderMode == "PICKUP" ?
+                    <div className="userDeliverInfo">
+                      <h5>
+                        {moment(OneOrderHistory?.customer?.pickupTime).format("ll")}
+                      </h5>
+                    </div> :
+                    <div className="userDeliverInfo">
+                      <h5>{OneOrderHistory?.customer?.address?.avenue}</h5>
+                      <h5>{OneOrderHistory?.customer?.address?.city}</h5>
+                      <h5>{OneOrderHistory?.customer?.address?.houseNo} house</h5>
+                      <h5>{OneOrderHistory?.customer?.address?.street}</h5>
+                    </div>
+                }
+                <div className="userInfo">
+                    <h5>{OneOrderHistory?.customer?.fullName}</h5>
+                    <h5>+ {OneOrderHistory?.customer?.phone}</h5>
+                </div>
+              </div>
+              <div className="invoice">
+                <h2>
+                  Invoice
+                </h2>
+                <h5>invoice no</h5>
+                <span>001/2021</span>
+                <h5 style={{ margin: "10px 0 0 0" }}>invoice date</h5>
+                <span>001/2021</span>
+              </div>
+            </div>
+            <Table rowKey={"index"} style={{ margin: "15px 0 0 0" }} pagination={false} columns={columns} dataSource={OneOrderHistory.products} />
             <div className="total">
               <div className="end">
                 <div className="info">

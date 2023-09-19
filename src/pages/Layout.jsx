@@ -22,9 +22,9 @@ const MyLayout = () => {
     const items = [
         {
             key: "1",
-            icon: <Icon.category color={url == "/dashboard" ? "blue" : "gray"} />,
+            icon: <Icon.category color={url == "/" ? "blue" : "gray"} />,
             label: collapsed ? "" : "Dashboard",
-            onClick: () => navigation("/dashboard")
+            onClick: () => navigation("/")
         },
         {
             key: "2",
