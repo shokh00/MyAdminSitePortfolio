@@ -23,7 +23,6 @@ export default function UserSettings() {
     }, [dispatch]);
 
     function postImg(e) {
-        console.log("working");
         setLoading(true);
         let formData = new FormData()
         formData.append('image', e.target.files[0])
@@ -68,7 +67,7 @@ export default function UserSettings() {
                         <Row style={{ textAlign: "center" }}>
                             <Col xs={24} sm={24} md={24} lg={24} xl={24}>
                                 <label htmlFor="input1">
-                                    <img src={image || StoreSetting.image} height={100} width={150} alt="..." />
+                                    <img src={image || StoreSetting.image} alt="..." />
                                 </label>
                             </Col>
                             <input id="input1" type="file" onChange={postImg} style={{ display: "none" }} />

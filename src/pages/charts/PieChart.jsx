@@ -10,7 +10,7 @@ const DemoPie = () => {
       text,
       style
     );
-    const R = containerWidth / 2; // r^2 = (w / 2)^2 + (h - offsetY)^2
+    const R = containerWidth / 2;
 
     let scale = 1;
 

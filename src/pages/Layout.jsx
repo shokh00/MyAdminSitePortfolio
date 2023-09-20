@@ -24,6 +24,7 @@ const MyLayout = () => {
             key: "1",
             icon: <Icon.category color={url == "/" ? "blue" : "gray"} />,
             label: collapsed ? "" : "Dashboard",
+            className: window.location.pathname == "/" ? "ant-menu-item-selected" : "",
             onClick: () => navigation("/")
         },
         {

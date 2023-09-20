@@ -1,4 +1,4 @@
-import { Form, Input, Col, Button, Row, Tag, Spin } from 'antd';
+import { Form, Input, Col, Button, Row, Spin } from 'antd';
 import { useDispatch, useSelector } from 'react-redux';
 import axios from 'axios';
 import { useEffect, useState } from 'react';
@@ -13,12 +13,6 @@ export default function UserSettings() {
 
     useEffect(() => {
         dispatch(getUserInfo());
-        // useForm.setFieldsValue({
-        //     fullName: UserSetting?.fullName,
-        //     email: UserSetting?.email,
-        //     password: UserSetting?.password,
-        //     phone: UserSetting?.phone
-        // });
     }, []);
 
     function postImg(e) {
@@ -68,7 +62,7 @@ export default function UserSettings() {
                             <Col xs={24} sm={24} md={24} lg={24} xl={24}>
                                 <input id="input" type="file" onChange={postImg} style={{ display: "none" }} />
                                 <label htmlFor="input">
-                                    <img src={image || UserSetting.image} height={100} width={150} alt="..." />
+                                    <img src={image || UserSetting.image} alt="..." />
                                 </label>
                             </Col>
                             <Col xs={24} sm={24} md={24} lg={24} xl={24}>

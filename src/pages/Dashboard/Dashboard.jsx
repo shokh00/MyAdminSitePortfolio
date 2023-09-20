@@ -11,7 +11,6 @@ export default function Dashboard() {
   const { DashboardInfo, StoreSetting } = useSelector(state => state.app);
   const windowsWidth = window.innerWidth;
   const dispatch = useDispatch();
-  const latestProduct = [];
 
   useEffect(() => {
     dispatch(getDashboardInfo());
@@ -23,8 +22,8 @@ export default function Dashboard() {
       key: "productName",
       render: item => (
         <div className="dashboardTableDiv" key={item.index}>
-          <img src={item.image} alt="..." />
-          <p>{item.productName}</p>
+          <img src={item?.products[0]?.image} alt="..." />
+          <p>{item?.products[0]?.productName}</p>
         </div>
       ),
       dataIndex: "",
@@ -33,28 +32,25 @@ export default function Dashboard() {
     {
       title: "Price",
       key: "price",
-      render: item => item + StoreSetting.currency,
-      dataIndex: "price"
+      render: item => item?.products[0]?.price + " " + StoreSetting.currency,
+      dataIndex: ""
     },
     {
       title: "Count",
       key: "count",
-      render: item => <Badge showZero count={item} style={{
+      render: item => <Badge showZero count={item?.products[0]?.quantity} style={{
         color: "#3A36DB",
         background: "#D8D7F8"
       }} />,
-      dataIndex: "quantity"
+      dataIndex: ""
     },
     {
       title: "Total Amount",
       key: "totalAmount",
-      dataIndex: `price`
+      render: item => item?.products[0]?.price + " " + StoreSetting.currency,
+      dataIndex: ""
     },
   ];
-
-  DashboardInfo.lastOrder?.map(item => {
-    return latestProduct.push(item.products[0]);
-  });
 
   return (
     <div className="dashboard">
@@ -126,9 +122,10 @@ export default function Dashboard() {
               <Table
                 className="table"
                 sticky
-                dataSource={latestProduct}
+                dataSource={DashboardInfo?.lastOrder}
                 columns={columns}
                 pagination={false}
+                rowKey={"id"}
                 scroll={{
                   y: 240,
                 }}
@@ -143,8 +140,8 @@ export default function Dashboard() {
               </div>
               <div className="onlyTwo">
                 {
-                  DashboardInfo.topProducts?.map(item => {
-                    return <div key={item.index} className="aProduct" style={windowsWidth < 470 ? { flexDirection: "column", alignItems: "center", textAlign: "center" } : { display: "flex" }}>
+                  DashboardInfo.topProducts?.map((item, index) => {
+                    return <div key={index} className="aProduct" style={windowsWidth < 470 ? { flexDirection: "column", alignItems: "center", textAlign: "center" } : { display: "flex" }}>
                       <img src={item.image} alt="..." />
                       <div className="about">
                         <h3>{item.productName}</h3>

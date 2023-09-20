@@ -92,8 +92,8 @@ $elementGrayOpacity: 0.7;
           border-right: 1px solid lightgray;
 
           img {
-            width: 60px;
-            height: 60px;
+            width: 150px;
+            height: 100px;
             object-fit: contain;
             position: relative;
             overflow: hidden;
@@ -150,6 +150,30 @@ $elementGrayOpacity: 0.7;
             &:nth-child(1) {
               border-top-left-radius: 6px;
               border-bottom-left-radius: 6px;
+              display: flex;
+              justify-content: center;
+
+              img {
+                object-fit: contain;
+                position: relative;
+                display: block;
+                overflow: hidden;
+
+                &::after {
+                  content: "";
+                  background-image: url('https://cdn.vectorstock.com/i/preview-1x/48/06/image-preview-icon-picture-placeholder-vector-31284806.jpg');
+                  background-size: 50%;
+                  background-position: 50% , 50%;
+                  display: inline-block;
+                  position: absolute;
+                  top: 0;
+                  left: 0;
+                  width: 100%;
+                  background-repeat: no-repeat;
+                  background-color: white;
+                  height: 100%;
+                }
+              }
             }
 
             &:nth-child(3) {
@@ -183,7 +207,6 @@ $elementGrayOpacity: 0.7;
       .order-body {
         height: 90vh;
         overflow-x: auto;
-        border: 1px solid red;
 
         table {
           width: 100%;
@@ -192,7 +215,6 @@ $elementGrayOpacity: 0.7;
           border-collapse: separate;
 
           .orderM {
-            // border: 1px solid red;
             display: flex;
             gap: 10px;
             align-items: center;
@@ -324,10 +346,35 @@ $elementGrayOpacity: 0.7;
           justify-content: end;
 
           .end {
-            width: 50%;
+            width: 100%;
             display: flex;
-            flex-direction: column;
+            justify-content: space-between;
             margin: 10px 0 0 0;
+
+            .end-left {
+              width: 50%;
+              display: flex;
+
+              button {
+                height: fit-content;
+                border: 0;
+                border-radius: 6px;
+                padding: 10px 8px;
+                font-size: 13px;
+                display: block;
+                background-color: #188CC4;
+                color: white;
+
+                &:nth-child(2) {
+                  margin-left: 10px;
+                  padding: 10px 12px;
+                }
+              }
+            }
+
+            .end-right {
+              width: 50%;
+            }
 
             .info {
               display: flex;
@@ -343,7 +390,10 @@ $elementGrayOpacity: 0.7;
         padding: 0;
 
         .oneOrderCardBody {
-          .between__div , .between__div div , .between__div div h2 {
+
+          .between__div,
+          .between__div div,
+          .between__div div h2 {
             flex-direction: column;
             justify-content: center;
             align-items: center;
@@ -353,9 +403,19 @@ $elementGrayOpacity: 0.7;
               margin-top: 10px;
             }
           }
+
           .total {
             .end {
-              width: 100%;
+              flex-direction: column;
+
+              .end-right,
+              .end-left {
+                width: 100%;
+              }
+
+              .end-left {
+                justify-content: space-between;
+              }
             }
           }
         }
@@ -381,7 +441,7 @@ $elementGrayOpacity: 0.7;
 
           &::after {
             content: "";
-            background-image: url('https://static.thenounproject.com/png/583402-200.png');
+            background-image: url('https://cdn.vectorstock.com/i/preview-1x/48/06/image-preview-icon-picture-placeholder-vector-31284806.jpg');
             background-size: 100%;
             display: inline-block;
             position: absolute;
@@ -724,6 +784,13 @@ $elementGrayOpacity: 0.7;
 .ant-spin-container {
   width: 100% !important;
   overflow-x: auto;
+}
+
+:where(.css-dev-only-do-not-override-1wazalj).ant-menu-light.ant-menu-root.ant-menu-inline,
+:where(.css-dev-only-do-not-override-1wazalj).ant-menu-light>.ant-menu.ant-menu-root.ant-menu-inline,
+:where(.css-dev-only-do-not-override-1wazalj).ant-menu-light.ant-menu-root.ant-menu-vertical,
+:where(.css-dev-only-do-not-override-1wazalj).ant-menu-light>.ant-menu.ant-menu-root.ant-menu-vertical {
+  border: 0;
 }
 
 // Media

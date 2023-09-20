@@ -1,10 +1,11 @@
 import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
-import { SwitchOrder, getOneOrder, getOrderHistory } from "../../config/action";
+import { getOneOrder, getOrderHistory } from "../../config/action";
 import { Card, Col, Row, Table, message } from "antd";
 import moment from "moment/moment";
 import call from "../../config/call";
+import jsPDF from "jspdf";
 
 export default function OneOrder() {
   const { OneOrderHistory, StoreSetting } = useSelector((state) => state.app);
@@ -12,12 +13,11 @@ export default function OneOrder() {
   const { id } = useParams();
   const navigate = useNavigate();
 
+  const doc = new jsPDF();
+
   useEffect(() => {
     dispatch(getOneOrder(id));
   }, []);
-
-  console.log(OneOrderHistory);
-  console.log(StoreSetting);
 
   const columns = [
     {
@@ -62,9 +62,6 @@ export default function OneOrder() {
       })
   }
 
-  console.log(OneOrderHistory);
-  console.log(StoreSetting);
-
   return (
     <Row>
       <Col span={24}>
@@ -85,11 +82,11 @@ export default function OneOrder() {
               <img src={StoreSetting?.image} alt="" />
               <div>
                 <p>{StoreSetting?.supportEmail}</p>
-                <p>+{StoreSetting?.supportPhone}</p>
+                <p>+998 {StoreSetting?.supportPhone}</p>
               </div>
             </div>
             <div className="between__div">
-              <div style={{textAlign: "start"}}>
+              <div style={{ textAlign: "start" }}>
                 <h2>{OneOrderHistory?.orderMode}</h2>
                 {
                   OneOrderHistory.orderMode == "PICKUP" ?
@@ -106,8 +103,8 @@ export default function OneOrder() {
                     </div>
                 }
                 <div className="userInfo">
-                    <h5>{OneOrderHistory?.customer?.fullName}</h5>
-                    <h5>+ {OneOrderHistory?.customer?.phone}</h5>
+                  <h5>{OneOrderHistory?.customer?.fullName}</h5>
+                  <h5>+998 {OneOrderHistory?.customer?.phone}</h5>
                 </div>
               </div>
               <div className="invoice">
@@ -115,26 +112,32 @@ export default function OneOrder() {
                   Invoice
                 </h2>
                 <h5>invoice no</h5>
-                <span>001/2021</span>
+                <span>{OneOrderHistory.id}</span>
                 <h5 style={{ margin: "10px 0 0 0" }}>invoice date</h5>
-                <span>001/2021</span>
+                <span>{OneOrderHistory.date}</span>
               </div>
             </div>
-            <Table rowKey={"index"} style={{ margin: "15px 0 0 0" }} pagination={false} columns={columns} dataSource={OneOrderHistory.products} />
+            <Table rowKey={"id"} style={{ margin: "15px 0 0 0" }} pagination={false} columns={columns} dataSource={OneOrderHistory.products} />
             <div className="total">
               <div className="end">
-                <div className="info">
-                  <h3>SUBTOTAL</h3>
-                  <h3>{OneOrderHistory.products?.map(item => item.price * item.quantity)} {StoreSetting.currency}</h3>
+                <div className="end-left">
+                  <button onClick={() => doc.save("a4.pdf")}>Download</button>
+                  <button onClick={() => window.print()}>Print</button>
                 </div>
-                <div className="info" style={{ margin: "0" }}>
-                  <h3>Discount: 0%</h3>
-                  <h3>0 {StoreSetting.currency}</h3>
-                </div>
-                <hr />
-                <div className="info">
-                  <h3>Total %</h3>
-                  <h3>{OneOrderHistory.products?.map(item => item.price * item.quantity)} {StoreSetting.currency}</h3>
+                <div className="end-right">
+                  <div className="info">
+                    <h3>SUBTOTAL</h3>
+                    <h3>{OneOrderHistory.products?.map(item => item.price * item.quantity)} {StoreSetting.currency}</h3>
+                  </div>
+                  <div className="info" style={{ margin: "0" }}>
+                    <h3>Discount: 0%</h3>
+                    <h3>0 {StoreSetting.currency}</h3>
+                  </div>
+                  <hr />
+                  <div className="info">
+                    <h3>Total %</h3>
+                    <h3>{OneOrderHistory.products?.map(item => item.price * item.quantity)} {StoreSetting.currency}</h3>
+                  </div>
                 </div>
               </div>
             </div>

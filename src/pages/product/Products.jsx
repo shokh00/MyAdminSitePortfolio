@@ -20,8 +20,6 @@ export default function Products() {
     dispatch(getProduct());
   }, [dispatch]);
 
-  console.log(products);
-
   const fall = (item, e) => {
     if (e.key == "1") {
       dispatch(updateState({ isProductOpen: true }));

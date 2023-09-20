@@ -1,23 +1,19 @@
 import { Button, Card, Form, Input, message } from 'antd'
-import { useEffect, useState } from 'react';
-import { useDispatch } from 'react-redux';
-import { Router, useNavigate } from 'react-router-dom';
+import { useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 import call from '../config/call';
 import history from '../history';
-import axios from 'axios';
 
 export default function SignUp(props) {
     const navigation = useNavigate();
     const [form] = Form.useForm();
-    const [emailDomain, setEmailDomain] = useState("");
-    const dispatch = useDispatch();
     const token = localStorage.getItem("x-auth-token");
 
     useEffect(() => {
         if (token) {
             call.get(`/login`, {
                 validateStatus: (status) => {
-                    return status < 500; // Resolve only if the status code is less than 500
+                    return status < 500;
                 }
             }).then(res => {
                 if (!res.data.id) {

@@ -57,9 +57,9 @@ export default function AddProductModal({ newStatus }) {
       dispatch(remakeProduct({ ...newValue, id: oneProduct.id, status: oneProduct.status }));
     }
     else {
-      console.log(newValue);
       dispatch(postProduct(newValue));
     }
+    // setImage(null);
   }
 
   function postImg(e) {
